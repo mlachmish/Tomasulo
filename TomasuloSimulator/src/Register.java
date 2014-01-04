@@ -1,5 +1,5 @@
 
-public interface Register<T> {
+public interface Register<T> extends RegistersContainer<T>{
 
 	public Constatns.State getState();
 	public void setState(Constatns.State state);

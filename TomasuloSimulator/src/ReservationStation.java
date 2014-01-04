@@ -1,5 +1,5 @@
 
-public interface ReservationStation<T> extends RegistersContainer<T> {
+public interface ReservationStation<T> extends ReservationStationContainer<T> {
 
 	public boolean isReadyToExcecute();
 }
