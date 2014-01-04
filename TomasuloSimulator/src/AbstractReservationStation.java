@@ -34,17 +34,17 @@ public abstract class AbstractReservationStation implements ReservationStation{
 	@Override
 	public void updateWithRegister(Register<?> cdbRegister) {
 		for (int i = 0; i < dockNumber; i++) {
-			if (docks[i].j.getState() == Constatns.State.Queued
-					&& docks[i].j.getStationName() == cdbRegister.getStationName()
-					&& docks[i].j.getDock() == cdbRegister.getDock()) {
-				docks[i].j.setData(cdbRegister.getData());
-				docks[i].j.setState(Constatns.State.Value);
+			if (docks[i].getJ().getState() == Constatns.State.Queued
+					&& docks[i].getJ().getStationName() == cdbRegister.getStationName()
+					&& docks[i].getJ().getDock() == cdbRegister.getDock()) {
+				docks[i].getJ().setData(cdbRegister.getData());
+				docks[i].getJ().setState(Constatns.State.Value);
 			}
-			if (docks[i].k.getState() == Constatns.State.Queued
-					&& docks[i].k.getStationName() == cdbRegister.getStationName()
-					&& docks[i].k.getDock() == cdbRegister.getDock()) {
-				docks[i].k.setData(cdbRegister.getData());
-				docks[i].k.setState(Constatns.State.Value);
+			if (docks[i].getK().getState() == Constatns.State.Queued
+					&& docks[i].getK().getStationName() == cdbRegister.getStationName()
+					&& docks[i].getK().getDock() == cdbRegister.getDock()) {
+				docks[i].getK().setData(cdbRegister.getData());
+				docks[i].getK().setState(Constatns.State.Value);
 			}
 		}
 	}
