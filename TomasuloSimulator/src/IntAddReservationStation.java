@@ -44,6 +44,7 @@ public class IntAddReservationStation extends AbstractReservationStation{
 		for (int i = 0; i < dockNumber; i++) {
 			if (docks[i].getOp() == null) {
 				docks[i].setOp(inst.getOpcode());
+				docks[i].setInstrNumber(inst.getInstructionNumber());
 				docks[i].setJ(Sim.intRegistersContainer.getRegister(inst.getSRC0()).copy());
 				docks[i].setK(Sim.intRegistersContainer.getRegister(inst.getSRC1()).copy());
 				

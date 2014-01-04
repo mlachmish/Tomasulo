@@ -19,6 +19,7 @@ public class ReservationStationContainerImpl implements
 		reservationStations.add(new IntAddReservationStation(configuration.get("int_delay"), configuration.get("int_nr_reservation")));
 		reservationStations.add(new FpAddReservationStation(configuration.get("add_delay"), configuration.get("add_nr_reservation")));
 		reservationStations.add(new FpMulReservationStation(configuration.get("mul_delay"), configuration.get("mul_nr_reservation")));
+		reservationStations.add(new LoadStoreReservationStation(configuration.get("mem_delay"), configuration.get("mem_nr_load_buffers"), configuration.get("mem_store_buffers")));
 		
 		CDBFloatValues = new HashSet<>();
 		CDBIntValues = new HashSet<>();
