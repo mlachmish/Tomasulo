@@ -24,6 +24,7 @@ public class Parser {
 	}
 
 	public static Memory loadMemory(String meminInputFile) {
+		return null;
 		// TODO: add implementation
 	}
 

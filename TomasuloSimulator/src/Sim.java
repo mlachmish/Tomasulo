@@ -1,4 +1,10 @@
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
+
+
+
+//import Constatns.Opcode;
 
 
 public  class Sim {
@@ -7,13 +13,15 @@ public  class Sim {
 	static RegistersContainer<Float>  floatRegistersContainer;
 	static RegistersContainer<Integer> intRegistersContainer;
 	static Memory memory ;
+	static Queue<Instruction> instructionQueue;
+	
 
 
 	
 	
 	public static void main(String[] args) {
 		//Construct types
-		
+		instructionQueue = new LinkedList<Instruction>();
 		
 		//Parse input
 		try {
@@ -27,20 +35,45 @@ public  class Sim {
 			e.printStackTrace();
 		}
 		
-		Boolean halt = false;
+	
 		int pc = 0;
-		while (!halt)
+		while (true)
 		{
-			//get instruction
-			Instruction currentInstruction = memory.getInstruction(pc);
+			//Fetch
+			instructionQueue.add(memory.getInstruction(pc));
 			
-			//issue : check for branch, check if avavilable RS
-			if (currentInstruction.getOpcode().)
+			
+			//"decode"
+			Instruction currentInstruction =instructionQueue.peek();
+			if (currentInstruction == null) {
+				//must be first Instruction
+				continue;
+			}
+			
+			//issue : check for branch, check if available RS
+			Constatns.Opcode opcode = currentInstruction.getOpcode();
+			if (opcode == Constatns.Opcode.HALT)
+			{
+				break;			
+			}
+			if (opcode == Constatns.Opcode.BEQ 
+					||  opcode == Constatns.Opcode.BNE  
+					|| opcode.equals(Constatns.Opcode.JUMP))
+			{
+				//Jump if possible
+				instructionQueue.poll();
+				continue;
+			}			
+			// we 
+			instructionQueue.poll();
+			reservationStationContainer.issueInstraction(currentInstruction);
+			
 			//Execute
-			
+			reservationStationContainer.excecute();
 			//Write to CDB?
+			reservationStationContainer.updateQueuedFromCDB();
 			
-		}
+			Clock.incClock();		}
 		
 		
 	}
