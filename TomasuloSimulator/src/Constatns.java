@@ -5,9 +5,7 @@ public class Constatns {
 		FPADD,
 		FPMULT,
 		INTADD,
-		INTMULT,
-		LOAD,
-		STORE;
+		LDST;
 	}
 
 	public enum State {
@@ -16,6 +14,18 @@ public class Constatns {
 	}
 	
 	public enum Opcode {
-		
+		LD,
+		ST,
+		JUMP,
+		BEQ,
+		BNE,
+		ADD,
+		ADDI,
+		SUB,
+		SUBI,
+		ADDS,
+		SUBS,
+		MULTS,
+		HALT;
 	}
 }
