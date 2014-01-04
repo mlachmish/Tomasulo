@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,19 +37,37 @@ public class Parser {
 
 	}
 
-	public static void createMemout(String path) {
-		// TODO: add implementation
+	public static void createMemout(String path) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		Memory mem = Sim.memory;
+		for (int i = 0; i < 1024 ; i++) {
+			float word = mem.load(i);			
+			writer.write(Float.toHexString(word) + "\n");
+		}
+		writer.close();
 	}
 
-	public static void createRegint(String path) {
+	public static void createRegint(String path) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+//		for (int i = 0; i < Sim.intRegistersContainer) {
+//			
+//		}
 		// TODO: add implementation
+		writer.close();
 	}
 
-	public static void createRegout(String path) {
+	public static void createRegout(String path) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+//		Sim.floatRegistersContainer;
 		// TODO: add implementation
+		writer.close();
 	}
 
-	public static void createTrace(String path) {
-		// TODO: add implementation
+	public static void createTrace(String path) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+		for (Instruction trace : Sim.traces) {
+			writer.write(trace.toString());
+		}
+		writer.close();
 	}
 }

@@ -9,8 +9,8 @@ import java.util.Queue;
 public class Sim {
 
 	public static ReservationStationContainer reservationStationContainer;
-	public static RegistersContainer<Float> floatRegistersContainer;
-	public static RegistersContainer<Integer> intRegistersContainer;
+	public static RegistersContainer<Register<Float>> floatRegistersContainer;
+	public static RegistersContainer<Register<Integer>> intRegistersContainer;
 	public static Memory memory;
 	public static Queue<Instruction> instructionQueue;
 	public static List<Instruction> traces;
@@ -23,9 +23,8 @@ public class Sim {
 		try {
 			Map<String, Integer> cfg = Parser.loadConfiguration(args[0]);
 			memory = Parser.loadMemory(args[1]);
-			
-			//reservationStationContainer.init();
-			
+
+			// reservationStationContainer.init();
 
 		} catch (IOException e) {
 			System.err.println("error reading from files");
@@ -34,17 +33,24 @@ public class Sim {
 		}
 
 		int pc = 0;
+		int instructionumber = 0;
+		Instruction currentInstruction;
+		Boolean waitingToIssue = true;
 		while (true) {
-			// Fetch
-			instructionQueue.add(memory.getInstruction(pc));
 
 			// "decode"
-			Instruction currentInstruction = instructionQueue.peek();
+			currentInstruction = instructionQueue.poll();
+			
+
+			// Fetch
+			instructionQueue.add(memory.getInstruction(pc++));
+			
 			if (currentInstruction == null) {
 				// must be first Instruction
 				continue;
 			}
-			
+			currentInstruction.setInstructionNumber(instructionumber++);
+
 			// issue : check for branch, check if available RS
 			Constatns.Opcode opcode = currentInstruction.getOpcode();
 			if (opcode == Constatns.Opcode.HALT) {
@@ -54,29 +60,42 @@ public class Sim {
 					|| opcode == Constatns.Opcode.BNE
 					|| opcode.equals(Constatns.Opcode.JUMP)) {
 				// Jump if possible
-				instructionQueue.poll();
+				
+				traces.add(currentInstruction);
 				continue;
 			}
-			// we
-			instructionQueue.poll();
-			// traces 
+			//
+
+			// traces
 			traces.add(currentInstruction);
-			reservationStationContainer.issueInstraction(currentInstruction);
+			continue;
+			// Boolean issued =
+			// reservationStationContainer.issueInstraction(currentInstruction);
+			//
+			// if (issued)
+			// {
+			// instructionQueue.poll();
+			// }
+			//
+			// // Execute
+			// reservationStationContainer.excecute();
+			// // Write to CDB?
+			// //reservationStationContainer.updateQueuedFromCDB();
+			//
+			// Clock.incClock();
 
-			// Execute
-			reservationStationContainer.excecute();
-			// Write to CDB?
-			//reservationStationContainer.updateQueuedFromCDB();
-
-			Clock.incClock();
 		}
-		
-		//Outputs
-		Parser.createMemout(args[2]);
-		Parser.createRegint(args[3]);
-		Parser.createRegint(args[4]);
-		Parser.createRegout(args[5]);
-		Parser.createTrace(args[6]);
 
+		// Outputs
+		try {
+			Parser.createMemout(args[2]);
+		
+		Parser.createRegint(args[3]);		
+		Parser.createRegout(args[4]);
+		Parser.createTrace(args[5]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

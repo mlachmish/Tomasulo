@@ -25,7 +25,7 @@ public class MemoryImpl implements Memory {
 		
 		Instruction instruction = new InstructionImpl(instructionString);
 		
-		return null;
+		return instruction;
 	}
 
 }

@@ -13,11 +13,24 @@ public class InstructionImpl implements Instruction {
 	private int CycleIsuued;
 	private int CycleExecuteStart;
 	private int CycleWriteCdb;
+	
+	private String instructionsString;
 
 	public InstructionImpl(String intructionsString)
 	{
 		short opcodeNum = Short.parseShort(intructionsString.substring(0, 1),  16);
 		this.opcode = Constatns.Opcode.values()[opcodeNum];
+		
+		this.DST = Short.parseShort(intructionsString.substring(1, 2),  16);
+		this.SRC0 = Short.parseShort(intructionsString.substring(2, 3), 16);
+		this.SRC1 = Short.parseShort(intructionsString.substring(3, 4), 16);
+		this.IMM =(short) Integer.parseInt(intructionsString.substring(4,8), 16);
+		this.instructionsString = intructionsString;
+	}
+	
+	@Override
+	public String toString(){
+		return String.format("%s %d %d %d\n", instructionsString, CycleIsuued, CycleExecuteStart, CycleWriteCdb);
 	}
 	
 	@Override
