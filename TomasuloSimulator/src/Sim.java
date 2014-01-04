@@ -9,8 +9,8 @@ import java.util.Queue;
 public class Sim {
 
 	public static ReservationStationContainer reservationStationContainer;
-	public static RegistersContainer<Register<Float>> floatRegistersContainer;
-	public static RegistersContainer<Register<Integer>> intRegistersContainer;
+	public static RegistersContainer<Float> floatRegistersContainer;
+	public static RegistersContainer<Integer> intRegistersContainer;
 	public static Memory memory;
 	public static Queue<Instruction> instructionQueue;
 	public static List<Instruction> traces;

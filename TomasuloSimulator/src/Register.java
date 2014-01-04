@@ -1,5 +1,5 @@
 
-public interface Register<T> extends RegistersContainer<T>{
+public interface Register<T> {
 
 	public Constatns.State getState();
 	public void setState(Constatns.State state);
@@ -12,6 +12,6 @@ public interface Register<T> extends RegistersContainer<T>{
 	
 	public int getDock();
 	public void setDock(int dockNum);
-	
-	public Register<T> clone();
+
+	public Register<T> copy();
 }

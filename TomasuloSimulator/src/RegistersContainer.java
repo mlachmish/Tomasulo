@@ -1,5 +1,5 @@
 
-public interface RegistersContainer<T> extends Container<T>{
+public interface RegistersContainer<T> extends Iterable<Register<T>>{
 
 	public Register<T> getRegister(int num);
 }
