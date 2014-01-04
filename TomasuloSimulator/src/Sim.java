@@ -51,7 +51,6 @@ public class Sim {
 				continue;
 			}
 			currentInstruction.setInstructionNumber(instructionumber++);
-			issued = false;
 
 			// traces
 			traces.add(currentInstruction);
@@ -95,8 +94,7 @@ public class Sim {
 			//
 
 			// continue;
-			issued = reservationStationContainer
-					.issueInstraction(currentInstruction);
+			issued = reservationStationContainer.issueInstruction(currentInstruction);
 
 			if (issued) {
 
