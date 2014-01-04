@@ -10,13 +10,14 @@ public interface Instruction {
 	public int getSRC1();
 	
 	public int getIMM();
-	
-	public int getInstructionNumber();
-	
+
 	//For trace use
 	@Override
 	public String toString();
 
+	public int getInstructionNumber();
+	public void setInstructionNumber(int number );
+	
 	public int getCycleIssued();
 	public void setCycleIssued(int cycle);
 	

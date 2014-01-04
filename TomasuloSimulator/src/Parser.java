@@ -23,24 +23,31 @@ public class Parser {
 		return configuratios;
 	}
 
-	public static Memory loadMemory(String meminInputFile) {
-		return null;
+	public static Memory loadMemory(String path) throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(path));
+		String[] memoryArr = new String[1024];
+		String currentLine;
+		for (int i = 0; i < 1024 ; i++) {
+			currentLine = reader.readLine().trim();
+			memoryArr[i] = currentLine;
+		}		
+		return new MemoryImpl(memoryArr);
+
+	}
+
+	public static void createMemout(String path) {
 		// TODO: add implementation
 	}
 
-	public static void createMemout() {
+	public static void createRegint(String path) {
 		// TODO: add implementation
 	}
 
-	public static void createRegint() {
+	public static void createRegout(String path) {
 		// TODO: add implementation
 	}
 
-	public static void createRegout() {
-		// TODO: add implementation
-	}
-
-	public static void createTrace() {
+	public static void createTrace(String path) {
 		// TODO: add implementation
 	}
 }
