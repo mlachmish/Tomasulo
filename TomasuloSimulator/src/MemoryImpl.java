@@ -1,31 +1,35 @@
-
 public class MemoryImpl implements Memory {
 
-	private String[] memoryArray ; 
-	
+	private String[] memoryArray;
+
 	public MemoryImpl(String[] memoryArr) {
 		this.memoryArray = memoryArr;
 	}
 
 	@Override
 	public float load(int address) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		Long i = Long.parseLong(memoryArray[address], 16);
+        return  Float.intBitsToFloat(i.intValue());		
 	}
 
 	@Override
 	public void store(int address, float data) {
-		// TODO Auto-generated method stub
-		
+		memoryArray[address] = Float.toHexString(data);
 	}
 
 	@Override
 	public Instruction getInstruction(int pc) {
-		String instructionString = memoryArray[pc]; 
-		
+		String instructionString = memoryArray[pc];
+
 		Instruction instruction = new InstructionImpl(instructionString);
-		
+
 		return instruction;
+	}
+
+	@Override
+	public String getWordString(int address) {
+		return memoryArray[address];
 	}
 
 }

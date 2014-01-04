@@ -40,9 +40,8 @@ public class Parser {
 	public static void createMemout(String path) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		Memory mem = Sim.memory;
-		for (int i = 0; i < 1024 ; i++) {
-			float word = mem.load(i);			
-			writer.write(Float.toHexString(word) + "\n");
+		for (int i = 0; i < 1024 ; i++) {						
+			writer.write( mem.getWordString(i) + "\n");
 		}
 		writer.close();
 	}

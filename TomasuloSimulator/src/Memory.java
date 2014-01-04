@@ -6,4 +6,6 @@ public interface Memory {
 	public void store(int address, float data);
 	
 	public Instruction getInstruction(int pc);
+	
+	public String getWordString(int address);
 }
