@@ -10,13 +10,13 @@ public class Clock {
 	private Clock() {
 	}
 	
-	public int getClock() {
+	public static int getClock() {
 		if (clock == null)
 			clock = new Integer(0);
 		return clock;
 	}
 	
-	public void incClock() {
+	public static void incClock() {
 		Clock.clock++;
 	}
 	
