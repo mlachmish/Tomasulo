@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Parser {
 
-	public static Map<String, Integer> loadConfiguration(File cfgInputFile) throws IOException {
+	public static Map<String, Integer> loadConfiguration(String cfgInputFile) throws IOException {
 		BufferedReader reader;
 
 		reader = new BufferedReader(new FileReader(cfgInputFile));
@@ -23,7 +23,7 @@ public class Parser {
 		return configuratios;
 	}
 
-	public static void loadMemory(File meminInputFile) {
+	public static Memory loadMemory(String meminInputFile) {
 		// TODO: add implementation
 	}
 
