@@ -43,6 +43,10 @@ public class LoadStoreReservationStation implements ReservationStation{
 				if (firstBuf.getJ().getState() == Constatns.State.Value)
 					return true;
 			}
+			else
+			{
+				
+			}
 		}
 		return false;
 	}

@@ -16,6 +16,9 @@ public abstract class AbstractReservationStation implements ReservationStation{
 		this.excecutionStartTime = 0;
 		this.dockIndexExcecuting = -1;
 		this.docks = new Dock[dockNumber];
+		for (int i = 0; i < docks.length; i++) {
+			docks[i] = new Dock<>();
+		}
 	}
 	
 	@Override

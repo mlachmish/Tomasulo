@@ -5,14 +5,12 @@
  */
 public class Clock {
 
-	private static Integer clock;
+	private static Integer clock = new Integer(0);
 	
 	private Clock() {
 	}
 	
-	public static int getClock() {
-		if (clock == null)
-			clock = new Integer(0);
+	public static int getClock() {		
 		return clock;
 	}
 	

@@ -7,11 +7,11 @@ public class INTRegistersContainer implements RegistersContainer<Integer>{
 
 	List<Register<Integer>> registers;
 	
-	public INTRegistersContainer(List<Register<Integer>> registers) {
+	public INTRegistersContainer() {
 		super();
 		this.registers = new ArrayList<>(16);
 		for (int i = 0; i < 15; i++) { //initial registers value are their indexs
-			Register<Integer> reg = new RegisterImpl<>();
+			Register<Integer> reg = new RegisterImpl<>(Constatns.State.Value, i, null, 0 );
 			this.registers.add(i, reg);
 			
 		}

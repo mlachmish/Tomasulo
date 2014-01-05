@@ -6,14 +6,24 @@ public class RegisterImpl<T> implements Register<T> {
 	Constatns.ReservationStationNames rsName;
 	int dock;
 	
-	public RegisterImpl() { //Empty register
-		super();
-		this.state = null;
-		this.data = null;
-		this.rsName = null;
-		dock = 0;
-	}
+//	/**
+//	 * empty constructor
+//	 */
+//	public RegisterImpl() { //Empty register
+//		super();
+//		this.state = null;
+//		this.data = null;
+//		this.rsName = null;
+//		dock = 0;
+//	}
 	
+	/**
+	 * 
+	 * @param state current state
+	 * @param data the value if there is one
+	 * @param rsName the if state is queued, the name of the RS we're waiting for
+	 * @param dock the dock within the RS we're waiting for
+	 */
 	public RegisterImpl(Constatns.State state, T data, Constatns.ReservationStationNames rsName,
 			int dock) {
 		super();

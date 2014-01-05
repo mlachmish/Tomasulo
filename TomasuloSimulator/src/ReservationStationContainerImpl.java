@@ -19,7 +19,7 @@ public class ReservationStationContainerImpl implements
 		reservationStations.add(new IntAddReservationStation(configuration.get("int_delay"), configuration.get("int_nr_reservation")));
 		reservationStations.add(new FpAddReservationStation(configuration.get("add_delay"), configuration.get("add_nr_reservation")));
 		reservationStations.add(new FpMulReservationStation(configuration.get("mul_delay"), configuration.get("mul_nr_reservation")));
-		reservationStations.add(new LoadStoreReservationStation(configuration.get("mem_delay"), configuration.get("mem_nr_load_buffers"), configuration.get("mem_store_buffers")));
+		reservationStations.add(new LoadStoreReservationStation(configuration.get("mem_delay"), configuration.get("mem_nr_load_buffers"), configuration.get("mem_nr_store_buffers")));
 		
 		CDBFloatValues = new HashSet<>();
 		CDBIntValues = new HashSet<>();
@@ -37,7 +37,7 @@ public class ReservationStationContainerImpl implements
 	}
 
 	@Override
-	public boolean issueInstruction(Instruction inst) {
+	public boolean issueInstruction(Instruction inst) {			
 		switch (inst.getOpcode()) {
 		case ADD:
 		case ADDI:
@@ -51,9 +51,11 @@ public class ReservationStationContainerImpl implements
 		
 		case MULTS:
 			return getReservationStation(Constatns.ReservationStationNames.FPMULT).issue(inst);
-			
+		case LD:
+		case ST:
+			return getReservationStation(Constatns.ReservationStationNames.LDST).issue(inst);
 		default:
-			return false;
+			throw new Error("internal error"); // should not get here			
 		}
 	}
 
