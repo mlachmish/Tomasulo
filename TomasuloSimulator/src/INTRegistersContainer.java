@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import Constants.Constants;
 
 public class INTRegistersContainer implements RegistersContainer<Integer>{
 
@@ -11,7 +11,7 @@ public class INTRegistersContainer implements RegistersContainer<Integer>{
 		super();
 		this.registers = new ArrayList<>(16);
 		for (int i = 0; i < 15; i++) { //initial registers value are their indexs
-			Register<Integer> reg = new RegisterImpl<>(Constatns.State.Value, i, null, 0 );
+			Register<Integer> reg = new RegisterImpl<>(Constants.State.Value, i, null, 0 );
 			this.registers.add(i, reg);
 			
 		}

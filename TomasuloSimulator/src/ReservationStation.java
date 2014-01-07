@@ -1,7 +1,8 @@
+import Constants.Constants.*;
 
 public interface ReservationStation {
 
-	public Constatns.ReservationStationNames getName();
+	public ReservationStationNames getName();
 	
 	public boolean isReadyToExcecute();
 	

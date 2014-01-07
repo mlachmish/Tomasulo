@@ -1,9 +1,10 @@
+import Constants.Constants;
 
 public class RegisterImpl<T> implements Register<T> {
 	
-	Constatns.State state;
+	Constants.State state;
 	T data;
-	Constatns.ReservationStationNames rsName;
+	Constants.ReservationStationNames rsName;
 	int dock;
 	
 //	/**
@@ -24,7 +25,7 @@ public class RegisterImpl<T> implements Register<T> {
 	 * @param rsName the if state is queued, the name of the RS we're waiting for
 	 * @param dock the dock within the RS we're waiting for
 	 */
-	public RegisterImpl(Constatns.State state, T data, Constatns.ReservationStationNames rsName,
+	public RegisterImpl(Constants.State state, T data, Constants.ReservationStationNames rsName,
 			int dock) {
 		super();
 		this.state = state;
@@ -34,12 +35,12 @@ public class RegisterImpl<T> implements Register<T> {
 	}
 
 	@Override
-	public Constatns.State getState() {
+	public Constants.State getState() {
 		return state;
 	}
 
 	@Override
-	public void setState(Constatns.State state) {
+	public void setState(Constants.State state) {
 		this.state = state;
 		
 	}
@@ -55,12 +56,12 @@ public class RegisterImpl<T> implements Register<T> {
 	}
 
 	@Override
-	public Constatns.ReservationStationNames getStationName() {
+	public Constants.ReservationStationNames getStationName() {
 		return rsName;
 	}
 
 	@Override
-	public void setStationName(Constatns.ReservationStationNames rsName) {
+	public void setStationName(Constants.ReservationStationNames rsName) {
 		this.rsName = rsName;
 	}
 

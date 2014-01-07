@@ -3,6 +3,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import Constants.Constants;
 
 public class ReservationStationContainerImpl implements
 		ReservationStationContainer {
@@ -27,7 +28,7 @@ public class ReservationStationContainerImpl implements
 
 	@Override
 	public ReservationStation getReservationStation(
-			Constatns.ReservationStationNames rsName) {
+			Constants.ReservationStationNames rsName) {
 		for (ReservationStation rs : reservationStations) {
 			if (rs.getName() == rsName)
 				return rs;
@@ -43,17 +44,17 @@ public class ReservationStationContainerImpl implements
 		case ADDI:
 		case SUB:
 		case SUBI:
-			return getReservationStation(Constatns.ReservationStationNames.INTADD).issue(inst);
+			return getReservationStation(Constants.ReservationStationNames.INTADD).issue(inst);
 			
 		case ADDS:
 		case SUBS:
-			return getReservationStation(Constatns.ReservationStationNames.FPADD).issue(inst);
+			return getReservationStation(Constants.ReservationStationNames.FPADD).issue(inst);
 		
 		case MULTS:
-			return getReservationStation(Constatns.ReservationStationNames.FPMULT).issue(inst);
+			return getReservationStation(Constants.ReservationStationNames.FPMULT).issue(inst);
 		case LD:
 		case ST:
-			return getReservationStation(Constatns.ReservationStationNames.LDST).issue(inst);
+			return getReservationStation(Constants.ReservationStationNames.LDST).issue(inst);
 		default:
 			throw new Error("internal error"); // should not get here			
 		}
@@ -73,7 +74,7 @@ public class ReservationStationContainerImpl implements
 		for (Register<Float> cdbValue : CDBFloatValues) {
 			//update registers container from Sim
 			for (Register<Float> register : Sim.floatRegistersContainer) {
-				if (register.getState() == Constatns.State.Queued
+				if (register.getState() == Constants.State.Queued
 						&& register.getStationName() == cdbValue.getStationName()
 						&& register.getDock() == cdbValue.getDock()) {
 					register.setData(cdbValue.getData());
@@ -90,11 +91,11 @@ public class ReservationStationContainerImpl implements
 		for (Register<Integer> cdbValue : CDBIntValues) {
 			//update registers container from Sim
 			for (Register<Integer> register : Sim.intRegistersContainer) {
-				if (register.getState() == Constatns.State.Queued
+				if (register.getState() == Constants.State.Queued
 						&& register.getStationName() == cdbValue.getStationName()
 						&& register.getDock() == cdbValue.getDock()) {
 					register.setData(cdbValue.getData());
-					register.setState(Constatns.State.Value);
+					register.setState(Constants.State.Value);
 				}
 			}
 			

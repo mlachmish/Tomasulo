@@ -1,11 +1,11 @@
-
+import Constants.Constants;
 
 public class InstructionImpl implements Instruction {
 	private int SRC0;
 	private int SRC1;
 	private int DST;
 	private int IMM;
-	private Constatns.Opcode opcode;
+	private Constants.Opcode opcode;
 	
 	//By issue order
 	private int InstructionNumber ;
@@ -19,7 +19,7 @@ public class InstructionImpl implements Instruction {
 	public InstructionImpl(String intructionsString)
 	{
 		short opcodeNum = Short.parseShort(intructionsString.substring(0, 1),  16);
-		this.opcode = Constatns.Opcode.values()[opcodeNum];
+		this.opcode = Constants.Opcode.values()[opcodeNum];
 		
 		this.DST = Short.parseShort(intructionsString.substring(1, 2),  16);
 		this.SRC0 = Short.parseShort(intructionsString.substring(2, 3), 16);
@@ -34,7 +34,7 @@ public class InstructionImpl implements Instruction {
 	}
 	
 	@Override
-	public Constatns.Opcode getOpcode() {
+	public Constants.Opcode getOpcode() {
 		return opcode;
 	}
 

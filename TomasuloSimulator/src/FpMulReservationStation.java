@@ -1,28 +1,30 @@
+import Constants.Constants;
 
 public class FpMulReservationStation extends AbstractReservationStation{
 
 	public FpMulReservationStation(int delay, int dockNumber) {
 		super(delay,dockNumber);
+		this.registers = Sim.floatRegistersContainer;
 	}
 	
-	@Override
-	public boolean issue(Instruction inst) {
-		for (int i = 0; i < dockNumber; i++) {
-			if (docks[i].getOp() == null) {
-				docks[i].setOp(inst.getOpcode());
-				docks[i].setInstrNumber(inst.getInstructionNumber());
-				docks[i].setJ(Sim.floatRegistersContainer.getRegister(inst.getSRC0()).copy());
-				docks[i].setK(Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy());
-				
-				Sim.floatRegistersContainer.getRegister(inst.getDST()).setState(Constatns.State.Queued);
-				Sim.floatRegistersContainer.getRegister(inst.getDST()).setStationName(getName());
-				Sim.floatRegistersContainer.getRegister(inst.getDST()).setDock(i);
-				
-				return true;
-			}
-		}
-		return false;
-	}
+//	@Override
+//	public boolean issue(Instruction inst) {
+//		for (int i = 0; i < dockNumber; i++) {
+//			if (docks[i].getOp() == null) {
+//				docks[i].setOp(inst.getOpcode());
+//				docks[i].setInstrNumber(inst.getInstructionNumber());
+//				docks[i].setJ(Sim.floatRegistersContainer.getRegister(inst.getSRC0()).copy());
+//				docks[i].setK(Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy());
+//				
+//				Sim.floatRegistersContainer.getRegister(inst.getDST()).setState(Constatns.State.Queued);
+//				Sim.floatRegistersContainer.getRegister(inst.getDST()).setStationName(getName());
+//				Sim.floatRegistersContainer.getRegister(inst.getDST()).setDock(i);
+//				
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	@Override
 	public void excecute() {
@@ -43,10 +45,10 @@ public class FpMulReservationStation extends AbstractReservationStation{
 		
 		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
 			float result=0f;
-			if (docks[dockIndexExcecuting].getOp() == Constatns.Opcode.MULTS){
+			if (docks[dockIndexExcecuting].getOp() == Constants.Opcode.MULTS){
 				result = (float)docks[dockIndexExcecuting].getJ().getData() * (float)docks[dockIndexExcecuting].getK().getData();
 			}
-		Register<Float> resultRegister = new RegisterImpl<Float>(Constatns.State.Value, result, getName(), dockIndexExcecuting);
+		Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), dockIndexExcecuting);
 		ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
 		isExcecuting = false;
 		docks[dockIndexExcecuting].emptyDock();
@@ -56,7 +58,7 @@ public class FpMulReservationStation extends AbstractReservationStation{
 	}
 
 	@Override
-	public Constatns.ReservationStationNames getName() {
-		return Constatns.ReservationStationNames.FPMULT;
+	public Constants.ReservationStationNames getName() {
+		return Constants.ReservationStationNames.FPMULT;
 	}
 }

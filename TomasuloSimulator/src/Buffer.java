@@ -1,6 +1,8 @@
+import Constants.Constants;
+
 public class Buffer {
 
-	Constatns.Opcode op;
+	Constants.Opcode op;
 	Register<Integer> j;
 	Register<Float> k;
 	int immidiate;
@@ -13,10 +15,10 @@ public class Buffer {
 		this.immidiate = immidiate;
 	}
 
-	public Constatns.Opcode getOp() {
+	public Constants.Opcode getOp() {
 		return op;
 	}
-	public void setOp(Constatns.Opcode op) {
+	public void setOp(Constants.Opcode op) {
 		this.op = op;
 	}
 	public Register<Integer> getJ() {
@@ -40,11 +42,11 @@ public class Buffer {
 
 
 	public boolean isReady() {
-		if (Constatns.Opcode.ST == op) {
-			return j.getState() == Constatns.State.Value &&
-					k.getState() == Constatns.State.Value;
+		if (Constants.Opcode.ST == op) {
+			return j.getState() == Constants.State.Value &&
+					k.getState() == Constants.State.Value;
 		} 
-		return j.getState() == Constatns.State.Value; 
+		return j.getState() == Constants.State.Value; 
 	}
 
 	public void emptyDock() {

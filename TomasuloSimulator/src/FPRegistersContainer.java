@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import Constants.Constants;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class FPRegistersContainer implements RegistersContainer<Float>{
 		super();
 		this.registers = new ArrayList<>(16);
 		for (int i = 0; i < 15; i++) { //initial registers value are their indexs
-			Register<Float> reg = new RegisterImpl<>(Constatns.State.Value,(float) i, null, 0 );			
+			Register<Float> reg = new RegisterImpl<>(Constants.State.Value,(float) i, null, 0 );			
 			this.registers.add(i, reg);			
 		}
 	}

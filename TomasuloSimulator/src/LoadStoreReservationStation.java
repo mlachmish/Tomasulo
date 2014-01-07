@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 import java.util.Queue;
-
+import Constants.Constants;
 
 public class LoadStoreReservationStation implements ReservationStation{
 
@@ -34,13 +34,13 @@ public class LoadStoreReservationStation implements ReservationStation{
 		Buffer firstBuf = buffer.peek();
 
 		if (firstBuf != null) {
-			if (firstBuf.getOp() == Constatns.Opcode.ST) {
-				if (firstBuf.getJ().getState() == Constatns.State.Value
-						&& firstBuf.getK().getState() == Constatns.State.Value) {
+			if (firstBuf.getOp() == Constants.Opcode.ST) {
+				if (firstBuf.getJ().getState() == Constants.State.Value
+						&& firstBuf.getK().getState() == Constants.State.Value) {
 					return true;
 				}
-			} else if (firstBuf.getOp() == Constatns.Opcode.LD) {
-				if (firstBuf.getJ().getState() == Constatns.State.Value)
+			} else if (firstBuf.getOp() == Constants.Opcode.LD) {
+				if (firstBuf.getJ().getState() == Constants.State.Value)
 					return true;
 			}
 			else
@@ -60,12 +60,12 @@ public class LoadStoreReservationStation implements ReservationStation{
 		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
 			Buffer currInst = buffer.peek();
 			float result = 0;
-			if (currInst.getOp() == Constatns.Opcode.ST){
+			if (currInst.getOp() == Constants.Opcode.ST){
 				Sim.memory.store(currInst.getJ().getData() + currInst.getImmidiate(), currInst.getK().getData());
 				storeCounter--;
-			} else if (currInst.getOp() == Constatns.Opcode.LD){
+			} else if (currInst.getOp() == Constants.Opcode.LD){
 				result = Sim.memory.load(currInst.getJ().getData() + currInst.getImmidiate());
-				Register<Float> resultRegister = new RegisterImpl<Float>(Constatns.State.Value, result, getName(), currInst.getInstrNumber());
+				Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), currInst.getInstrNumber());
 				ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
 				loadCounter--;
 			}
@@ -77,7 +77,7 @@ public class LoadStoreReservationStation implements ReservationStation{
 
 	@Override
 	public boolean issue(Instruction inst) {
-		if (inst.getOpcode() == Constatns.Opcode.ST) {
+		if (inst.getOpcode() == Constants.Opcode.ST) {
 			if (storeCounter < storeBufferSize) {
 				Buffer newBuffer = new Buffer();
 				newBuffer.setOp(inst.getOpcode());
@@ -89,7 +89,7 @@ public class LoadStoreReservationStation implements ReservationStation{
 				storeCounter++;
 				return true;
 			}
-		} else if (inst.getOpcode() == Constatns.Opcode.LD) {
+		} else if (inst.getOpcode() == Constants.Opcode.LD) {
 			if (loadCounter < loadBufferSize) {
 				Buffer newBuffer = new Buffer();
 				newBuffer.setOp(inst.getOpcode());
@@ -99,7 +99,7 @@ public class LoadStoreReservationStation implements ReservationStation{
 				buffer.add(newBuffer);
 				loadCounter++;
 
-				Sim.floatRegistersContainer.getRegister(inst.getDST()).setState(Constatns.State.Queued);
+				Sim.floatRegistersContainer.getRegister(inst.getDST()).setState(Constants.State.Queued);
 				Sim.floatRegistersContainer.getRegister(inst.getDST()).setStationName(getName());
 				Sim.floatRegistersContainer.getRegister(inst.getDST()).setDock(newBuffer.instrNumber);
 				return true;
@@ -111,23 +111,23 @@ public class LoadStoreReservationStation implements ReservationStation{
 	@Override
 	public void updateWithRegister(Register<?> cdbRegister) {
 		for (Buffer curBuf : buffer) {
-			if (curBuf.getJ().getState() ==Constatns.State.Queued
+			if (curBuf.getJ().getState() ==Constants.State.Queued
 					&& curBuf.getJ().getStationName() == cdbRegister.getStationName()
 					&& curBuf.getJ().getDock() == cdbRegister.getDock()) {
 				curBuf.getJ().setData((Integer)cdbRegister.getData());
-				curBuf.getJ().setState(Constatns.State.Value);
+				curBuf.getJ().setState(Constants.State.Value);
 			}
-			if (curBuf.getK().getState() ==Constatns.State.Queued
+			if (curBuf.getK().getState() ==Constants.State.Queued
 					&& curBuf.getK().getStationName() == cdbRegister.getStationName()
 					&& curBuf.getK().getDock() == cdbRegister.getDock()) {
 				curBuf.getK().setData((Float)cdbRegister.getData());
-				curBuf.getK().setState(Constatns.State.Value);
+				curBuf.getK().setState(Constants.State.Value);
 			}
 		}
 	}
 
 	@Override
-	public Constatns.ReservationStationNames getName() {
-		return Constatns.ReservationStationNames.LDST;
+	public Constants.ReservationStationNames getName() {
+		return Constants.ReservationStationNames.LDST;
 	}
 }

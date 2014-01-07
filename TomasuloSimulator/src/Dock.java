@@ -1,19 +1,22 @@
+import Constants.Constants;
+
 public class Dock<T> {
 
-	Constatns.Opcode op;
+	Constants.Opcode op;
 	Register<T> j;
 	Register<T> k;
 	int instrNumber;
+	private Instruction instruction;
 
 	public Dock() {
 		emptyDock();
 	}
 
-	public Constatns.Opcode getOp() {
+	public Constants.Opcode getOp() {
 		return op;
 	}
 
-	public void setOp(Constatns.Opcode op) {
+	public void setOp(Constants.Opcode op) {
 		this.op = op;
 	}
 
@@ -43,11 +46,18 @@ public class Dock<T> {
 
 	public boolean isReady() {
 		if (isEmpty()) return false;
-		return j.getState() == Constatns.State.Value
-				&& k.getState() == Constatns.State.Value;
+		if (instruction.getOpcode() == Constants.Opcode.ADDI ||
+				instruction.getOpcode() == Constants.Opcode.SUBI
+				|| instruction.getOpcode() == Constants.Opcode.LD)
+		{
+			return j.getState() == Constants.State.Value;
+		}
+		return j.getState() == Constants.State.Value
+				&& k.getState() == Constants.State.Value;
 	}
 
 	public void emptyDock() {
+		setInstruction(null);
 		op = null;
 		j = null;
 		k = null;
@@ -61,5 +71,13 @@ public class Dock<T> {
 			return true;
 		}
 		else return false;
+	}
+
+	public Instruction getInstruction() {
+		return instruction;
+	}
+
+	public void setInstruction(Instruction instruction) {
+		this.instruction = instruction;
 	}
 }

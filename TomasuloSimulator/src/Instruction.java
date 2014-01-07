@@ -1,7 +1,8 @@
+import Constants.Constants;
 
 public interface Instruction {
 
-	public Constatns.Opcode getOpcode();
+	public Constants.Opcode getOpcode();
 	
 	public int getDST();
 

@@ -1,5 +1,6 @@
+package Constants;
 
-public class Constatns {
+public class Constants {
 	
 	public enum ReservationStationNames {
 		FPADD,

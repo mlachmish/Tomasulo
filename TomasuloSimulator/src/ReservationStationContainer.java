@@ -1,7 +1,8 @@
+import Constants.Constants;
 
 public interface ReservationStationContainer {
 
-	public ReservationStation getReservationStation(Constatns.ReservationStationNames rsName);
+	public ReservationStation getReservationStation(Constants.ReservationStationNames rsName);
 	
 	public boolean issueInstruction(Instruction inst);
 	
