@@ -22,23 +22,25 @@ public class IntAddReservationStation extends AbstractReservationStation{
 					}
 				}
 			}
+			docks[dockIndexExcecuting].getInstruction().setCycleExcecuteStart(excecutionStartTime);
 		}
 		
 		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
 			int result=0;
-			Constants.Opcode op = docks[dockIndexExcecuting].getOp(); 
+			Dock executionDock = docks[dockIndexExcecuting];
+			Constants.Opcode op = executionDock.getOp(); 
 			switch (op) {
 			case ADD:
-				result = (int)docks[dockIndexExcecuting].getJ().getData() + (int)docks[dockIndexExcecuting].getK().getData();
+				result = (int)executionDock.getJ().getData() + (int)executionDock.getK().getData();
 				break;
 			case SUB:
-				result = (int)docks[dockIndexExcecuting].getJ().getData() - (int)docks[dockIndexExcecuting].getK().getData();
+				result = (int)executionDock.getJ().getData() - (int)executionDock.getK().getData();
 				break;
 			case ADDI:
-				result = (int)docks[dockIndexExcecuting].getJ().getData() + docks[dockIndexExcecuting].getInstruction().getIMM(); //need IMM
+				result = (int)executionDock.getJ().getData() + executionDock.getInstruction().getIMM(); //need IMM
 				break;
 			case SUBI:
-				result = (int)docks[dockIndexExcecuting].getJ().getData() - docks[dockIndexExcecuting].getInstruction().getIMM(); //need IMM
+				result = (int)executionDock.getJ().getData() - executionDock.getInstruction().getIMM(); //need IMM
 				break;
 			case ADDS:				
 			case BEQ:
@@ -70,10 +72,13 @@ public class IntAddReservationStation extends AbstractReservationStation{
 //			}
 		Register<Integer> resultRegister = new RegisterImpl<Integer>(Constants.State.Value, result, getName(), dockIndexExcecuting);
 		ReservationStationContainerImpl.CDBIntValues.add(resultRegister);
+		executionDock.getInstruction().setCycleWriteCDB(Clock.getClock() + 1);
 		isExcecuting = false;
-		docks[dockIndexExcecuting].emptyDock();
+		executionDock.emptyDock();
 		excecutionStartTime = 0;
 		dockIndexExcecuting = -1;
+		
+
 		}
 	}
 

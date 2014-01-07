@@ -41,15 +41,20 @@ public class Sim {
 		Instruction currentInstruction = null;
 		Boolean waitingToIssue = true;
 		Boolean issued = true;
+		Boolean waitingForJump = false;
 		while (true) {
-
+			// TODO remove
+			if (pc > 16 || Clock.getClock() > 655)
+				break;
 			// "decode"
 			if (issued && !instructionQueue.isEmpty()) {
 				currentInstruction = instructionQueue.poll();
 				currentInstruction.setInstructionNumber(instructionumber++);
 			}
-			// Fetch
-			instructionQueue.add(memory.getInstruction(pc++));
+			if (issued) {
+				// Fetch
+				instructionQueue.add(memory.getInstruction(pc++));
+			}
 
 			if (currentInstruction == null) {
 				// must be first Instruction
@@ -57,8 +62,11 @@ public class Sim {
 				continue;
 			}
 
-			// traces
-			traces.add(currentInstruction);
+			// if (!issued || waitingForJump)
+			// {
+			// // traces
+			// traces.add(currentInstruction);
+			// }
 
 			// issue : check for branch, check if available RS
 			Constants.Opcode opcode = currentInstruction.getOpcode();
@@ -81,17 +89,33 @@ public class Sim {
 						// if we don't have values yet, continue to execute
 						// don't jump
 					} else if ((opcode == Constants.Opcode.BEQ)
-							&& (SRC0.getData() == SRC1.getData())) {
+							&& (SRC0.getData() != SRC1.getData())) {
 						// don't jump
+						traces.add(currentInstruction);
+						currentInstruction.setCycleIssued(Clock.getClock());
+						currentInstruction.setCycleExcecuteStart(Clock
+								.getClock());
+						currentInstruction.setCycleWriteCDB(-1);
 						issued = true;
 
 					} else if ((opcode == Constants.Opcode.BNE)
-							&& (SRC0.getData() != SRC1.getData())) {
+							&& (SRC0.getData() == SRC1.getData())) {
 						// don't jump
+						traces.add(currentInstruction);
 						issued = true;
+						currentInstruction.setCycleIssued(Clock.getClock());
+						currentInstruction.setCycleExcecuteStart(Clock
+								.getClock());
+						currentInstruction.setCycleWriteCDB(-1);
 					} else {
 						// JUMP!!!
-						pc += currentInstruction.getIMM();
+						traces.add(currentInstruction);
+						currentInstruction.setCycleIssued(Clock.getClock());
+						currentInstruction.setCycleExcecuteStart(Clock
+								.getClock());
+						currentInstruction.setCycleWriteCDB(-1);
+						pc += currentInstruction.getIMM() -1 ; // -1 because pc jumps twice by the time we get here
+						instructionQueue.clear();
 						currentInstruction = null;
 						issued = true;
 						Clock.incClock();
@@ -112,13 +136,14 @@ public class Sim {
 					.issueInstruction(currentInstruction);
 
 			if (issued) {
-
+				traces.add(currentInstruction);
+				currentInstruction.setCycleIssued(Clock.getClock());
 			}
 
 			// Execute
 			reservationStationContainer.excecute();
 			// Write to CDB?
-			// reservationStationContainer.updateQueuedFromCDB();
+			reservationStationContainer.updateFromCDB();
 
 			Clock.incClock();
 

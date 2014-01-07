@@ -56,17 +56,20 @@ public class LoadStoreReservationStation implements ReservationStation{
 		if (isReadyToExcecute()) {
 			isExcecuting = true;
 			excecutionStartTime = Clock.getClock();
+			buffer.peek().getInstruction().setCycleExcecuteStart(Clock.getClock());			
 		}
 		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
 			Buffer currInst = buffer.peek();
 			float result = 0;
 			if (currInst.getOp() == Constants.Opcode.ST){
 				Sim.memory.store(currInst.getJ().getData() + currInst.getImmidiate(), currInst.getK().getData());
+				currInst.getInstruction().setCycleWriteCDB(-1);
 				storeCounter--;
 			} else if (currInst.getOp() == Constants.Opcode.LD){
 				result = Sim.memory.load(currInst.getJ().getData() + currInst.getImmidiate());
 				Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), currInst.getInstrNumber());
 				ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
+				currInst.getInstruction().setCycleWriteCDB(Clock.getClock() + 1);
 				loadCounter--;
 			}
 			isExcecuting = false;
@@ -79,23 +82,26 @@ public class LoadStoreReservationStation implements ReservationStation{
 	public boolean issue(Instruction inst) {
 		if (inst.getOpcode() == Constants.Opcode.ST) {
 			if (storeCounter < storeBufferSize) {
-				Buffer newBuffer = new Buffer();
-				newBuffer.setOp(inst.getOpcode());
-				newBuffer.setInstrNumber(inst.getInstructionNumber());
-				newBuffer.setImmidiate(inst.getIMM());
-				newBuffer.setJ(Sim.intRegistersContainer.getRegister(inst.getSRC0()).copy());
-				newBuffer.setK(Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy());
+				Buffer newBuffer = new Buffer(
+						inst.getOpcode(),
+						Sim.intRegistersContainer.getRegister(inst.getSRC0()).copy(),
+						Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy(),
+						inst.getIMM(),
+						inst.getInstructionNumber(),
+						inst);							
 				buffer.add(newBuffer);
 				storeCounter++;
 				return true;
 			}
 		} else if (inst.getOpcode() == Constants.Opcode.LD) {
 			if (loadCounter < loadBufferSize) {
-				Buffer newBuffer = new Buffer();
-				newBuffer.setOp(inst.getOpcode());
-				newBuffer.setInstrNumber(inst.getInstructionNumber());
-				newBuffer.setImmidiate(inst.getIMM());
-				newBuffer.setJ(Sim.intRegistersContainer.getRegister(inst.getSRC0()).copy());
+				Buffer newBuffer = new Buffer(
+						inst.getOpcode(),
+						Sim.intRegistersContainer.getRegister(inst.getSRC0()).copy(),
+						null,
+						inst.getIMM(),
+						inst.getInstructionNumber(),
+						inst);
 				buffer.add(newBuffer);
 				loadCounter++;
 

@@ -1,4 +1,5 @@
 import Constants.Constants;
+import Constants.Constants.Opcode;
 
 public class Buffer {
 
@@ -7,7 +8,18 @@ public class Buffer {
 	Register<Float> k;
 	int immidiate;
 	int instrNumber;
+	private Instruction instruction;
 
+	public Buffer(Opcode op, Register<Integer> j, Register<Float> k,
+			int immidiate, int instrNumber, Instruction instruction) {
+		super();
+		this.op = op;
+		this.j = j;
+		this.k = k;
+		this.immidiate = immidiate;
+		this.instrNumber = instrNumber;
+		this.instruction = instruction;
+	}
 	public int getImmidiate() {
 		return immidiate;
 	}
@@ -55,5 +67,11 @@ public class Buffer {
 		k = null;
 		immidiate = 0;
 		instrNumber = -1;
+	}
+	public Instruction getInstruction() {
+		return instruction;
+	}
+	public void setInstruction(Instruction instruction) {
+		this.instruction = instruction;
 	}
 }

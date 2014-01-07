@@ -42,19 +42,23 @@ public class FpAddReservationStation extends AbstractReservationStation{
 					}
 				}
 			}
+			docks[dockIndexExcecuting].getInstruction().setCycleExcecuteStart(excecutionStartTime);
 		}
 		
 		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
 			float result=0f;
-			if (docks[dockIndexExcecuting].getOp() == Constants.Opcode.ADDS){
-				result = (float)docks[dockIndexExcecuting].getJ().getData() + (float)docks[dockIndexExcecuting].getK().getData();
-			} else if (docks[dockIndexExcecuting].getOp() == Constants.Opcode.SUBS){
-				result = (float)docks[dockIndexExcecuting].getJ().getData() - (float)docks[dockIndexExcecuting].getK().getData();
+			Dock excecutionDock = docks[dockIndexExcecuting];
+			if (excecutionDock.getOp() == Constants.Opcode.ADDS){
+				result = (float)excecutionDock.getJ().getData() + (float)excecutionDock.getK().getData();
+			} else if (excecutionDock.getOp() == Constants.Opcode.SUBS){
+				result = (float)excecutionDock.getJ().getData() - (float)excecutionDock.getK().getData();
 			}
 		Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), dockIndexExcecuting);
 		ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
+		//Trace
+		excecutionDock.getInstruction().setCycleWriteCDB(Clock.getClock() + 1);
 		isExcecuting = false;
-		docks[dockIndexExcecuting].emptyDock();
+		excecutionDock.emptyDock();
 		excecutionStartTime = 0;
 		dockIndexExcecuting = -1;
 		}

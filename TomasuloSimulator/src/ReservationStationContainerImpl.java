@@ -77,7 +77,7 @@ public class ReservationStationContainerImpl implements
 				if (register.getState() == Constants.State.Queued
 						&& register.getStationName() == cdbValue.getStationName()
 						&& register.getDock() == cdbValue.getDock()) {
-					register.setData(cdbValue.getData());
+ 					register.setData(cdbValue.getData());					
 				}
 			}
 			

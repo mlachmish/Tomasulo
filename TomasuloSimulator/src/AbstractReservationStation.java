@@ -37,9 +37,9 @@ public abstract class AbstractReservationStation implements ReservationStation{
 //				docks[i].setK(Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy());
 				docks[i].setInstruction(inst);
 				
-				Sim.floatRegistersContainer.getRegister(inst.getDST()).setState(Constants.State.Queued);
-				Sim.floatRegistersContainer.getRegister(inst.getDST()).setStationName(getName());
-				Sim.floatRegistersContainer.getRegister(inst.getDST()).setDock(i);
+				registers.getRegister(inst.getDST()).setState(Constants.State.Queued);
+				registers.getRegister(inst.getDST()).setStationName(getName());
+				registers.getRegister(inst.getDST()).setDock(i);
 				
 				return true;
 			}
@@ -63,6 +63,7 @@ public abstract class AbstractReservationStation implements ReservationStation{
 	@Override
 	public void updateWithRegister(Register<?> cdbRegister) {
 		for (int i = 0; i < dockNumber; i++) {
+			if (docks[i].isEmpty()) continue;
 			if (docks[i].getJ().getState() == Constants.State.Queued
 					&& docks[i].getJ().getStationName() == cdbRegister.getStationName()
 					&& docks[i].getJ().getDock() == cdbRegister.getDock()) {

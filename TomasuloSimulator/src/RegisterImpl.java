@@ -1,4 +1,5 @@
 import Constants.Constants;
+import Constants.Constants.State;
 
 public class RegisterImpl<T> implements Register<T> {
 	
@@ -52,7 +53,8 @@ public class RegisterImpl<T> implements Register<T> {
 
 	@Override
 	public void setData(T data) {
-		this.data = data;		
+		this.data = data;
+		this.state = State.Value;
 	}
 
 	@Override
