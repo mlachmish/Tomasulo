@@ -79,6 +79,8 @@ public class RegisterImpl<T> implements Register<T> {
 	
 	@Override
 	public Register<T> copy() {
+		// real copy!!!!!
+//		State newState = new State 
 		return new RegisterImpl<T>(state, data, rsName, dock);
 	}
 

@@ -29,6 +29,24 @@ public class FpAddReservationStation extends AbstractReservationStation{
 
 	@Override
 	public void excecute() {
+		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
+			float result=0f;
+			Dock excecutionDock = docks[dockIndexExcecuting];
+			if (excecutionDock.getOp() == Constants.Opcode.ADDS){
+				result = (float)excecutionDock.getJ().getData() + (float)excecutionDock.getK().getData();
+			} else if (excecutionDock.getOp() == Constants.Opcode.SUBS){
+				result = (float)excecutionDock.getJ().getData() - (float)excecutionDock.getK().getData();
+			}
+		Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), dockIndexExcecuting);
+		ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
+		//Trace
+		excecutionDock.getInstruction().setCycleWriteCDB(Clock.getClock());
+		isExcecuting = false;
+		excecutionDock.emptyDock();
+		excecutionStartTime = 0;
+		dockIndexExcecuting = -1;
+		}
+		
 		if (isReadyToExcecute()) {
 			isExcecuting = true;
 			excecutionStartTime = Clock.getClock();
@@ -45,23 +63,7 @@ public class FpAddReservationStation extends AbstractReservationStation{
 			docks[dockIndexExcecuting].getInstruction().setCycleExcecuteStart(excecutionStartTime);
 		}
 		
-		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
-			float result=0f;
-			Dock excecutionDock = docks[dockIndexExcecuting];
-			if (excecutionDock.getOp() == Constants.Opcode.ADDS){
-				result = (float)excecutionDock.getJ().getData() + (float)excecutionDock.getK().getData();
-			} else if (excecutionDock.getOp() == Constants.Opcode.SUBS){
-				result = (float)excecutionDock.getJ().getData() - (float)excecutionDock.getK().getData();
-			}
-		Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), dockIndexExcecuting);
-		ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
-		//Trace
-		excecutionDock.getInstruction().setCycleWriteCDB(Clock.getClock() + 1);
-		isExcecuting = false;
-		excecutionDock.emptyDock();
-		excecutionStartTime = 0;
-		dockIndexExcecuting = -1;
-		}
+		
 	}
 
 	@Override

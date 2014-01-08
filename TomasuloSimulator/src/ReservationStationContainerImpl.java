@@ -56,7 +56,7 @@ public class ReservationStationContainerImpl implements
 		case ST:
 			return getReservationStation(Constants.ReservationStationNames.LDST).issue(inst);
 		default:
-			throw new Error("internal error"); // should not get here			
+			return false; // branch	that isn't ready yet		
 		}
 	}
 
@@ -104,6 +104,9 @@ public class ReservationStationContainerImpl implements
 				rs.updateWithRegister(cdbValue);
 			}
 		}
+		//clear the cdb
+		CDBFloatValues.clear();
+		CDBIntValues.clear();
 
 	}
 

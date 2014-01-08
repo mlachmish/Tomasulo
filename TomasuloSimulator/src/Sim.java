@@ -43,24 +43,16 @@ public class Sim {
 		Boolean issued = true;
 		Boolean waitingForJump = false;
 		while (true) {
+			int clk = Clock.getClock();
 			// TODO remove
 			if (pc > 16 || Clock.getClock() > 655)
 				break;
-			// "decode"
-			if (issued && !instructionQueue.isEmpty()) {
-				currentInstruction = instructionQueue.poll();
-				currentInstruction.setInstructionNumber(instructionumber++);
-			}
-			if (issued) {
-				// Fetch
-				instructionQueue.add(memory.getInstruction(pc++));
-			}
 
-			if (currentInstruction == null) {
-				// must be first Instruction
-				Clock.incClock();
-				continue;
-			}
+			// if (currentInstruction == null) {
+			// // must be first Instruction
+			// Clock.incClock();
+			// continue;
+			// }
 
 			// if (!issued || waitingForJump)
 			// {
@@ -69,81 +61,106 @@ public class Sim {
 			// }
 
 			// issue : check for branch, check if available RS
-			Constants.Opcode opcode = currentInstruction.getOpcode();
-			if (opcode == Constants.Opcode.HALT) {
-				Clock.incClock();
-				break;
+
+			//
+
+			// Write to CDB?
+			reservationStationContainer.updateFromCDB();
+
+			// Execute
+			reservationStationContainer.excecute();
+
+			// "decode"
+			if (issued && !instructionQueue.isEmpty()) {
+				currentInstruction = instructionQueue.poll();
+				currentInstruction.setInstructionNumber(instructionumber++);
 			}
-			if (opcode == Constants.Opcode.BEQ
-					|| opcode == Constants.Opcode.BNE
-					|| opcode.equals(Constants.Opcode.JUMP)) {
 
-				// Jump if possible
-				if (opcode != Constants.Opcode.JUMP) {
-					Register SRC0 = intRegistersContainer
-							.getRegister(currentInstruction.getSRC0());
-					Register SRC1 = intRegistersContainer
-							.getRegister(currentInstruction.getSRC1());
-					if (SRC0.getState() == Constants.State.Queued
-							|| SRC1.getState() == Constants.State.Queued) {
-						// if we don't have values yet, continue to execute
-						// don't jump
-					} else if ((opcode == Constants.Opcode.BEQ)
-							&& (SRC0.getData() != SRC1.getData())) {
-						// don't jump
-						traces.add(currentInstruction);
-						currentInstruction.setCycleIssued(Clock.getClock());
-						currentInstruction.setCycleExcecuteStart(Clock
-								.getClock());
-						currentInstruction.setCycleWriteCDB(-1);
-						issued = true;
+			if (currentInstruction != null) {
+				Constants.Opcode opcode = currentInstruction.getOpcode();
+				if (opcode == Constants.Opcode.HALT) {
+					Clock.incClock();
+					break;
+				}
+				if (opcode == Constants.Opcode.BEQ
+						|| opcode == Constants.Opcode.BNE
+						|| opcode.equals(Constants.Opcode.JUMP)) {
 
-					} else if ((opcode == Constants.Opcode.BNE)
-							&& (SRC0.getData() == SRC1.getData())) {
-						// don't jump
-						traces.add(currentInstruction);
-						issued = true;
-						currentInstruction.setCycleIssued(Clock.getClock());
-						currentInstruction.setCycleExcecuteStart(Clock
-								.getClock());
-						currentInstruction.setCycleWriteCDB(-1);
+					// Jump if possible
+					if (opcode != Constants.Opcode.JUMP) {
+						Register SRC0 = intRegistersContainer
+								.getRegister(currentInstruction.getSRC0());
+						Register SRC1 = intRegistersContainer
+								.getRegister(currentInstruction.getSRC1());
+						if (SRC0.getState() == Constants.State.Queued
+								|| SRC1.getState() == Constants.State.Queued) {
+							// if we don't have values yet, continue to execute
+							// don't jump
+						} else if ((opcode == Constants.Opcode.BEQ)
+								&& (SRC0.getData() != SRC1.getData())) {
+							// don't jump
+							traces.add(currentInstruction);
+							currentInstruction.setCycleIssued(Clock.getClock());
+							currentInstruction.setCycleExcecuteStart(Clock
+									.getClock());
+							currentInstruction.setCycleWriteCDB(-1);
+							issued = true;
+
+						} else if ((opcode == Constants.Opcode.BNE)
+								&& (SRC0.getData() == SRC1.getData())) {
+							// don't jump
+							traces.add(currentInstruction);
+							issued = true;
+							currentInstruction.setCycleIssued(Clock.getClock());
+							currentInstruction.setCycleExcecuteStart(Clock
+									.getClock());
+							currentInstruction.setCycleWriteCDB(-1);
+						} else {
+							// JUMP!!!
+							traces.add(currentInstruction);
+							currentInstruction.setCycleIssued(Clock.getClock());
+							currentInstruction.setCycleExcecuteStart(Clock
+									.getClock());
+							currentInstruction.setCycleWriteCDB(-1);
+							pc += currentInstruction.getIMM() - 1; // -1 because
+																	// pc
+																	// jumps
+																	// twice
+																	// by the
+																	// time
+																	// we get
+																	// here
+							instructionQueue.clear();
+							currentInstruction = null;
+							issued = true;
+							Clock.incClock();
+							continue;
+						}
 					} else {
 						// JUMP!!!
-						traces.add(currentInstruction);
-						currentInstruction.setCycleIssued(Clock.getClock());
-						currentInstruction.setCycleExcecuteStart(Clock
-								.getClock());
-						currentInstruction.setCycleWriteCDB(-1);
-						pc += currentInstruction.getIMM() -1 ; // -1 because pc jumps twice by the time we get here
-						instructionQueue.clear();
+
+						pc += currentInstruction.getIMM();
 						currentInstruction = null;
 						issued = true;
 						Clock.incClock();
 						continue;
 					}
 				}
-				// JUMP!!!
-				pc += currentInstruction.getIMM();
-				currentInstruction = null;
-				issued = true;
-				Clock.incClock();
-				continue;
 			}
-			//
-
-			// continue;
-			issued = reservationStationContainer
-					.issueInstruction(currentInstruction);
+			// Issue
+			if (currentInstruction != null) {
+				issued = reservationStationContainer
+						.issueInstruction(currentInstruction);
+				if (issued) {
+					traces.add(currentInstruction);
+					currentInstruction.setCycleIssued(Clock.getClock());
+				}
+			}
 
 			if (issued) {
-				traces.add(currentInstruction);
-				currentInstruction.setCycleIssued(Clock.getClock());
+				// Fetch
+				instructionQueue.add(memory.getInstruction(pc++));
 			}
-
-			// Execute
-			reservationStationContainer.excecute();
-			// Write to CDB?
-			reservationStationContainer.updateFromCDB();
 
 			Clock.incClock();
 

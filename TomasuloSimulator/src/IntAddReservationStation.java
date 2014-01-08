@@ -9,22 +9,6 @@ public class IntAddReservationStation extends AbstractReservationStation{
 
 	@Override
 	public void excecute() {
-		if (isReadyToExcecute()) {
-			isExcecuting = true;
-			excecutionStartTime = Clock.getClock();
-			
-			int minInstrNum = Integer.MAX_VALUE;
-			for (int i = 0; i < dockNumber; i++) {
-				if (docks[i].isReady()) {
-					if (docks[i].instrNumber < minInstrNum) {
-						minInstrNum = docks[i].instrNumber;
-						dockIndexExcecuting = i;
-					}
-				}
-			}
-			docks[dockIndexExcecuting].getInstruction().setCycleExcecuteStart(excecutionStartTime);
-		}
-		
 		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
 			int result=0;
 			Dock executionDock = docks[dockIndexExcecuting];
@@ -49,30 +33,15 @@ public class IntAddReservationStation extends AbstractReservationStation{
 			case JUMP:
 			case LD:
 			case MULTS:
-			case ST:
-			
-			
+			case ST:		
 			case SUBS:
-
 			default:
-				break;
+				throw new Error("Internal Error");
 			}
-//			if (docks[dockIndexExcecuting].getOp() == Constatns.Opcode.ADD){
-//				result = (int)docks[dockIndexExcecuting].getJ().getData() + (int)docks[dockIndexExcecuting].getK().getData();
-//			} else if (docks[dockIndexExcecuting].getOp() == Constatns.Opcode.SUB){
-//				result = (int)docks[dockIndexExcecuting].getJ().getData() - (int)docks[dockIndexExcecuting].getK().getData();
-//			} else if (docks)
-//			{
-//				
-//			} 
-//			
-//			else
-//			{				
-//				throw new Error("Internal Error");
-//			}
+
 		Register<Integer> resultRegister = new RegisterImpl<Integer>(Constants.State.Value, result, getName(), dockIndexExcecuting);
 		ReservationStationContainerImpl.CDBIntValues.add(resultRegister);
-		executionDock.getInstruction().setCycleWriteCDB(Clock.getClock() + 1);
+		executionDock.getInstruction().setCycleWriteCDB(Clock.getClock());
 		isExcecuting = false;
 		executionDock.emptyDock();
 		excecutionStartTime = 0;
@@ -80,6 +49,24 @@ public class IntAddReservationStation extends AbstractReservationStation{
 		
 
 		}
+		
+		if (isReadyToExcecute()) {
+			isExcecuting = true;
+			excecutionStartTime = Clock.getClock();
+			
+			int minInstrNum = Integer.MAX_VALUE;
+			for (int i = 0; i < dockNumber; i++) {
+				if (docks[i].isReady()) {
+					if (docks[i].instrNumber < minInstrNum) {
+						minInstrNum = docks[i].instrNumber;
+						dockIndexExcecuting = i;
+					}
+				}
+			}
+			docks[dockIndexExcecuting].getInstruction().setCycleExcecuteStart(excecutionStartTime);
+		}
+		
+		
 	}
 
 
