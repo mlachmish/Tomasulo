@@ -98,7 +98,7 @@ public class LoadStoreReservationStation implements ReservationStation{
 				Buffer newBuffer = new Buffer(
 						inst.getOpcode(),
 						Sim.intRegistersContainer.getRegister(inst.getSRC0()).copy(),
-						null,
+						Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy(),
 						inst.getIMM(),
 						inst.getInstructionNumber(),
 						inst);
