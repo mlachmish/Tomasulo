@@ -69,7 +69,7 @@ public class LoadStoreReservationStation implements ReservationStation{
 				result = Sim.memory.load(currInst.getJ().getData() + currInst.getImmidiate());
 				Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), currInst.getInstrNumber());
 				ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
-				currInst.getInstruction().setCycleWriteCDB(Clock.getClock() + 1);
+				currInst.getInstruction().setCycleWriteCDB(Clock.getClock());
 				loadCounter--;
 			}
 			isExcecuting = false;

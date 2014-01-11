@@ -15,7 +15,7 @@ public class MemoryImpl implements Memory {
 
 	@Override
 	public void store(int address, float data) {
-		memoryArray[address] = Float.toHexString(data);
+		memoryArray[address] = Integer.toHexString(Float.floatToIntBits(data));
 	}
 
 	@Override
