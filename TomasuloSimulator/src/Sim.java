@@ -43,8 +43,8 @@ public class Sim {
 		Instruction currentInstruction = null;
 		Boolean halt = false;
 		Boolean issued = true;
-		while (!halt || !instructionQueue.isEmpty()
-				|| !reservationStationContainer.isDone()) {
+		while (!(halt && instructionQueue.isEmpty()
+				&& reservationStationContainer.isDone())) {
 			int clk = Clock.getClock();
 			// // remove
 			// if (pc > 16 || Clock.getClock() > 655)
