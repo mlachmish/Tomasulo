@@ -6,41 +6,43 @@ public class FpMulReservationStation extends AbstractReservationStation{
 		super(delay,dockNumber);
 		this.registers = Sim.floatRegistersContainer;
 	}
-	
+
 	@Override
 	public void excecute() {		
-		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
-			float result=0f;
-			Dock excecutionDock = docks[dockIndexExcecuting];
-			if (excecutionDock.getOp() == Constants.Opcode.MULTS){
-				result = (float)excecutionDock.getJ().getData() * (float)excecutionDock.getK().getData();
+		for (int i = 0; i < dockNumber; i++) {
+			if (docks[i].isExcecuting() && Clock.getClock() == docks[i].getExcecutionStartTime() + delay) {
+				float result=0f;
+				Dock excecutionDock = docks[i];
+				if (excecutionDock.getOp() == Constants.Opcode.MULTS){
+					result = (float)excecutionDock.getJ().getData() * (float)excecutionDock.getK().getData();
+				}
+				Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), i);
+				ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
+				//Trace
+				excecutionDock.getInstruction().setCycleWriteCDB(Clock.getClock());
+				excecutionDock.emptyDock();		
+				docks[i].setExcecutionStartTime(-1);
+				break;
 			}
-		Register<Float> resultRegister = new RegisterImpl<Float>(Constants.State.Value, result, getName(), dockIndexExcecuting);
-		ReservationStationContainerImpl.CDBFloatValues.add(resultRegister);
-		excecutionDock.getInstruction().setCycleWriteCDB(Clock.getClock());
-		isExcecuting = false;
-		excecutionDock.emptyDock();		
-		excecutionStartTime = 0;
-		dockIndexExcecuting = -1;
-		
 		}
-		
+
 		if (isReadyToExcecute()) {
-			isExcecuting = true;
-			excecutionStartTime = Clock.getClock();
-			
+			int dockIndexExcecuting = -1;
+			int excecutionStartTime = Clock.getClock();
+
 			int minInstrNum = Integer.MAX_VALUE;
 			for (int i = 0; i < dockNumber; i++) {
-				if (docks[i].isReady()) {
-					if (docks[i].instrNumber < minInstrNum) {
-						minInstrNum = docks[i].instrNumber;
+				if (docks[i].isReady() && !docks[i].isExcecuting()) {
+					if (docks[i].getInstrNumber() < minInstrNum) {
+						minInstrNum = docks[i].getInstrNumber();
 						dockIndexExcecuting = i;
 					}
 				}
 			}
+			docks[dockIndexExcecuting].setExcecutionStartTime(excecutionStartTime);
 			docks[dockIndexExcecuting].getInstruction().setCycleExcecuteStart(excecutionStartTime);
 		}
-				
+
 	}
 
 	@Override

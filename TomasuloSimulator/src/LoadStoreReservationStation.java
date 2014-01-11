@@ -45,7 +45,7 @@ public class LoadStoreReservationStation implements ReservationStation{
 			}
 			else
 			{
-				
+
 			}
 		}
 		return false;
@@ -98,7 +98,7 @@ public class LoadStoreReservationStation implements ReservationStation{
 				Buffer newBuffer = new Buffer(
 						inst.getOpcode(),
 						Sim.intRegistersContainer.getRegister(inst.getSRC0()).copy(),
-						Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy(),
+						null,
 						inst.getIMM(),
 						inst.getInstructionNumber(),
 						inst);
@@ -125,13 +125,15 @@ public class LoadStoreReservationStation implements ReservationStation{
 				curBuf.getJ().setStationName(null);
 				curBuf.getJ().setDock(-1);
 			}
-			if (curBuf.getK().getState() ==Constants.State.Queued
-					&& curBuf.getK().getStationName() == cdbRegister.getStationName()
-					&& curBuf.getK().getDock() == cdbRegister.getDock()) {
-				curBuf.getK().setData((Float)cdbRegister.getData());
-				curBuf.getK().setState(Constants.State.Value);
-				curBuf.getK().setStationName(null);
-				curBuf.getK().setDock(-1);
+			if (curBuf.getInstruction().getOpcode() != Constants.Opcode.LD){
+				if (curBuf.getK().getState() ==Constants.State.Queued
+						&& curBuf.getK().getStationName() == cdbRegister.getStationName()
+						&& curBuf.getK().getDock() == cdbRegister.getDock()) {
+					curBuf.getK().setData((Float)cdbRegister.getData());
+					curBuf.getK().setState(Constants.State.Value);
+					curBuf.getK().setStationName(null);
+					curBuf.getK().setDock(-1);
+				}
 			}
 		}
 	}

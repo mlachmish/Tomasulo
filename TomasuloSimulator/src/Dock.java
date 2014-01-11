@@ -2,11 +2,12 @@ import Constants.Constants;
 
 public class Dock<T> {
 
-	Constants.Opcode op;
-	Register<T> j;
-	Register<T> k;
-	int instrNumber;
+	private Constants.Opcode op;
+	private Register<T> j;
+	private Register<T> k;
+	private int instrNumber;
 	private Instruction instruction;
+	private int excecutionStartTime;
 
 	public Dock() {
 		emptyDock();
@@ -44,6 +45,14 @@ public class Dock<T> {
 		this.instrNumber = instrNumber;
 	}
 
+	public int getExcecutionStartTime() {
+		return excecutionStartTime;
+	}
+
+	public void setExcecutionStartTime(int excecutionStartTime) {
+		this.excecutionStartTime = excecutionStartTime;
+	}
+
 	public boolean isReady() {
 		if (isEmpty()) return false;
 		if (instruction.getOpcode() == Constants.Opcode.ADDI ||
@@ -62,6 +71,7 @@ public class Dock<T> {
 		j = null;
 		k = null;
 		instrNumber = -1;
+		excecutionStartTime = -1;
 	}
 
 	public Boolean isEmpty()
@@ -79,5 +89,9 @@ public class Dock<T> {
 
 	public void setInstruction(Instruction instruction) {
 		this.instruction = instruction;
+	}
+	
+	public boolean isExcecuting() {
+		return excecutionStartTime != -1;
 	}
 }

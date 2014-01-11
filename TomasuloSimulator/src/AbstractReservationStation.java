@@ -5,25 +5,19 @@ public abstract class AbstractReservationStation implements ReservationStation{
 	int delay;
 	int dockNumber;
 	Dock[] docks;
-	boolean isExcecuting;
-	int excecutionStartTime;
-	int dockIndexExcecuting;
 	RegistersContainer<?> registers;
-	
-	
+
+
 	public AbstractReservationStation(int delay, int dockNumber) {
 		super();
 		this.delay = delay;
 		this.dockNumber = dockNumber;
-		this.isExcecuting = false;
-		this.excecutionStartTime = 0;
-		this.dockIndexExcecuting = -1;
 		this.docks = new Dock[dockNumber];
 		for (int i = 0; i < docks.length; i++) {
 			docks[i] = new Dock<>();
 		}
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 		for (int i = 0; i < dockNumber; i++) {
@@ -33,7 +27,7 @@ public abstract class AbstractReservationStation implements ReservationStation{
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean issue(Instruction inst) {
 		for (int i = 0; i < dockNumber; i++) {
@@ -46,30 +40,26 @@ public abstract class AbstractReservationStation implements ReservationStation{
 //				
 //				docks[i].setK(Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy());
 				docks[i].setInstruction(inst);
-				
+
 				registers.getRegister(inst.getDST()).setState(Constants.State.Queued);
 				registers.getRegister(inst.getDST()).setStationName(getName());
 				registers.getRegister(inst.getDST()).setDock(i);
-				
+
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean isReadyToExcecute() {
-		if (isExcecuting) {
-			return false;
-		}
-
 		for (int i = 0; i < dockNumber; i++) {
-			if (docks[i].isReady())
+			if (docks[i].isReady() && !docks[i].isExcecuting())
 				return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void updateWithRegister(Register<?> cdbRegister) {
 		for (int i = 0; i < dockNumber; i++) {
