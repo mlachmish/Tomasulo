@@ -1,11 +1,13 @@
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+
 import Constants.Constants;
 
 public class LoadStoreReservationStation implements ReservationStation {
 
 	int delay;
-	Queue<Buffer> buffer;
+	LinkedList<Buffer> buffer;
 	boolean isExcecuting;
 	int excecutionStartTime;
 	int loadBufferSize;
@@ -26,28 +28,27 @@ public class LoadStoreReservationStation implements ReservationStation {
 		this.loadCounter = 0;
 	}
 
-	@Override
-	public boolean isReadyToExcecute() {
+	public Buffer excecuteNext() {
 		// if (isExcecuting) {
 		// return false;
 		// }
-
-		Buffer firstBuf = buffer.peek();
-
-		if (firstBuf != null) {
-			if (firstBuf.getOp() == Constants.Opcode.ST) {
-				if (firstBuf.getJ().getState() == Constants.State.Value
-						&& firstBuf.getK().getState() == Constants.State.Value) {
-					return true;
-				}
-			} else if (firstBuf.getOp() == Constants.Opcode.LD) {
-				if (firstBuf.getJ().getState() == Constants.State.Value)
-					return true;
+		// Iterator<Buffer> iterator = buffer.descendingIterator();
+		Buffer currentBuffer = null;
+		for (Iterator iterator2 = buffer.iterator(); iterator2
+				.hasNext();) {
+			currentBuffer = (Buffer) iterator2.next();
+			if (currentBuffer != null && !currentBuffer.isExcecuting()) {
+				return currentBuffer;
 			} else {
-
+				currentBuffer = null;
 			}
 		}
-		return false;
+		// Buffer firstBuf = iterator.next()
+		// boolean ready = false;
+		// while (!ready && firstBuf != null)
+		//
+		// }
+		return currentBuffer;
 	}
 
 	@Override
@@ -80,9 +81,12 @@ public class LoadStoreReservationStation implements ReservationStation {
 			buffer.poll();
 		}
 		if (isReadyToExcecute()) {
-			currInst.setExcecutionStartTime(Clock.getClock());
-			buffer.peek().getInstruction()
-					.setCycleExcecuteStart(Clock.getClock());
+			Buffer newBufferToStart = excecuteNext();
+			if (newBufferToStart != null) {
+				newBufferToStart.setExcecutionStartTime(Clock.getClock());
+				newBufferToStart.getInstruction().setCycleExcecuteStart(
+						Clock.getClock());
+			}
 		}
 	}
 
@@ -155,5 +159,37 @@ public class LoadStoreReservationStation implements ReservationStation {
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return (loadCounter == 0) && (storeCounter == 0) && buffer.isEmpty();
+	}
+
+	@Override
+	public boolean isReadyToExcecute() {
+		Buffer currentBuffer = null;
+		for (Iterator iterator2 = buffer.iterator(); iterator2
+				.hasNext();) {
+			currentBuffer = (Buffer) iterator2.next();
+			if (currentBuffer != null && !currentBuffer.isExcecuting()) {
+				if (currentBuffer.getOp() == Constants.Opcode.ST) {
+					return (currentBuffer.getJ().getState() == Constants.State.Value
+							&& currentBuffer.getK().getState() == Constants.State.Value);
+//					if (currentBuffer.getJ().getState() == Constants.State.Value
+//							&& currentBuffer.getK().getState() == Constants.State.Value) {
+//						return true;
+//					} else 
+//					{
+//						return false;
+					
+					
+				} else if (currentBuffer.getOp() == Constants.Opcode.LD) {
+					return (currentBuffer.getJ().getState() == Constants.State.Value);
+//					if (currentBuffer.getJ().getState() == Constants.State.Value)
+//						return true;
+//				} else {
+//					return false;
+				}
+			} else {
+				currentBuffer = null;
+			}
+		}
+		return false;
 	}
 }
