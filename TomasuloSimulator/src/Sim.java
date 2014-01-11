@@ -43,9 +43,9 @@ public class Sim {
 		Boolean issued = true;
 		while (!halt  
 				|| !instructionQueue.isEmpty()
-				|| reservationStationContainer.isDone()) {
+				|| !reservationStationContainer.isDone()) {
 			int clk = Clock.getClock();
-//			// TODO remove
+//			//  remove
 //			if (pc > 16 || Clock.getClock() > 655)
 //				break;
 
@@ -67,7 +67,7 @@ public class Sim {
 					halt = true;
 //					Clock.incClock();
 //					
-//					break;
+					break;
 				}
 				if (opcode == Constants.Opcode.BEQ
 						|| opcode == Constants.Opcode.BNE
