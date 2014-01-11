@@ -123,4 +123,11 @@ public class ReservationStationContainerImpl implements
 		return isReservationStationsEmpty && CDBFloatValues.isEmpty() && CDBIntValues.isEmpty();
 	}
 
+	@Override
+	public void incClock() {
+		for (ReservationStation rs : reservationStations) {
+			rs.incClock();
+		}
+	}
+
 }

@@ -31,7 +31,7 @@ public abstract class AbstractReservationStation implements ReservationStation{
 	@Override
 	public boolean issue(Instruction inst) {
 		for (int i = 0; i < dockNumber; i++) {
-			if (docks[i].getOp() == null) {
+			if (docks[i].isReadyForIssue()) {
 				docks[i].setOp(inst.getOpcode());
 				docks[i].setInstrNumber(inst.getInstructionNumber());
 				docks[i].setJ(registers.getRegister(inst.getSRC0()).copy());
@@ -81,5 +81,10 @@ public abstract class AbstractReservationStation implements ReservationStation{
 				docks[i].getK().setDock(-1);
 			}
 		}
+	}
+	
+	public void incClock()
+	{
+		
 	}
 }

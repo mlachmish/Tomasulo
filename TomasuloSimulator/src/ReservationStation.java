@@ -13,4 +13,6 @@ public interface ReservationStation {
 	public void updateWithRegister(Register<?> cdbregister);
 	
 	public boolean isEmpty();
+
+	public void incClock();
 }

@@ -11,4 +11,6 @@ public interface ReservationStationContainer {
 	public void updateFromCDB();
 
 	public boolean isDone();
+
+	public void incClock();
 }

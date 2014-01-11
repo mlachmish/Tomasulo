@@ -8,6 +8,7 @@ public class Dock<T> {
 	private int instrNumber;
 	private Instruction instruction;
 	private int excecutionStartTime;
+	private int issueTime;
 
 	public Dock() {
 		emptyDock();
@@ -72,6 +73,7 @@ public class Dock<T> {
 		k = null;
 		instrNumber = -1;
 		excecutionStartTime = -1;
+		issueTime = Clock.getClock();
 	}
 
 	public Boolean isEmpty()
@@ -93,5 +95,9 @@ public class Dock<T> {
 	
 	public boolean isExcecuting() {
 		return excecutionStartTime != -1;
+	}
+
+	public boolean isReadyForIssue() {		
+		return ((Clock.getClock() > issueTime ) &&  isEmpty());
 	}
 }

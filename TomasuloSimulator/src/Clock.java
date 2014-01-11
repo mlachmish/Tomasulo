@@ -16,6 +16,7 @@ public class Clock {
 	
 	public static void incClock() {
 		Clock.clock++;
+		Sim.reservationStationContainer.incClock();
 	}
 	
 	

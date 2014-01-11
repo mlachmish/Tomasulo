@@ -46,7 +46,7 @@ public class Sim {
 		while (!(halt && instructionQueue.isEmpty()
 				&& reservationStationContainer.isDone())) {
 			int clk = Clock.getClock();
-//			  remove
+////			  remove
 //			 if (pc >= 16 || Clock.getClock() > 1000)
 //			 break;
 
@@ -161,9 +161,9 @@ public class Sim {
 			Clock.incClock();
 		}
 		traces.add(currentInstruction);
-		currentInstruction.setCycleIssued(Clock.getClock() - 1);
+		currentInstruction.setCycleIssued(Clock.getClock());
 		currentInstruction.setCycleExcecuteStart(Clock
-				.getClock() - 1);
+				.getClock());
 		currentInstruction.setCycleWriteCDB(-1);
 		// Outputs
 		try {

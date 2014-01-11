@@ -14,6 +14,8 @@ public class LoadStoreReservationStation implements ReservationStation {
 	int storeBufferSize;
 	int storeCounter;
 	int loadCounter;
+	int prevStoreCounter;
+	int prevLoadCounter;
 
 	public LoadStoreReservationStation(int delay, int loadBufferSize,
 			int storeBufferSize) {
@@ -93,7 +95,7 @@ public class LoadStoreReservationStation implements ReservationStation {
 	@Override
 	public boolean issue(Instruction inst) {
 		if (inst.getOpcode() == Constants.Opcode.ST) {
-			if (storeCounter < storeBufferSize) {
+			if (prevStoreCounter < storeBufferSize) {
 				Buffer newBuffer = new Buffer(inst.getOpcode(),
 						Sim.intRegistersContainer.getRegister(inst.getSRC0())
 								.copy(), Sim.floatRegistersContainer
@@ -104,14 +106,13 @@ public class LoadStoreReservationStation implements ReservationStation {
 				return true;
 			}
 		} else if (inst.getOpcode() == Constants.Opcode.LD) {
-			if (loadCounter < loadBufferSize) {
+			if (prevLoadCounter < loadBufferSize) {
 				Buffer newBuffer = new Buffer(inst.getOpcode(),
 						Sim.intRegistersContainer.getRegister(inst.getSRC0())
 								.copy(), null, inst.getIMM(),
 						inst.getInstructionNumber(), inst);
 				buffer.add(newBuffer);
 				loadCounter++;
-
 				Sim.floatRegistersContainer.getRegister(inst.getDST())
 						.setState(Constants.State.Queued);
 				Sim.floatRegistersContainer.getRegister(inst.getDST())
@@ -191,5 +192,12 @@ public class LoadStoreReservationStation implements ReservationStation {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void incClock() {
+		prevLoadCounter = loadCounter;
+		prevStoreCounter = storeCounter;
+		
 	}
 }
