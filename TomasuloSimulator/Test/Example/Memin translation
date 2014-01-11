@@ -10,12 +10,30 @@ b5620000 MULT.S F5 F6 * F2 (1.0 * 1.0)
 62200001 addi R2 R2 + 1 (0 + 1)
 92210000 ADDS F2 F2 F1 (1 + 1)
 4024fffb bne R2 R4 (jump (-5) to line 8) 
-66600001
-96610000
-4064fff6
+66600001 ADDi R6 R6 1 -> R6++
+96610000 Add.s F6 F6 F1 -> F6= F6+ F1
+4064fff6 BNE R6 == R4  jump -9
 c0000000 HALT
 
-
+int i  = 1; (R6)
+float x = 1.0 (F6)
+int a = 0; (R3)
+int k = 11; (R4)
+do{
+int j = 1; (R2)
+float sum = x (F2)
+	do {
+		float z = x *sum (z-> F5)
+		a[10] = z;
+		a++;
+		j++;
+		sum =  sum + x;
+	} while (k  != j)
+	i++
+	x= x+ 1.0
+}
+while (i != k)
+halt;
 
 
 

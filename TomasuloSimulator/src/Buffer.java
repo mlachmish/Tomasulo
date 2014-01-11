@@ -9,6 +9,7 @@ public class Buffer {
 	int immidiate;
 	int instrNumber;
 	private Instruction instruction;
+	private int excecutionStartTime;
 
 	public Buffer(Opcode op, Register<Integer> j, Register<Float> k,
 			int immidiate, int instrNumber, Instruction instruction) {
@@ -19,6 +20,7 @@ public class Buffer {
 		this.immidiate = immidiate;
 		this.instrNumber = instrNumber;
 		this.instruction = instruction;
+		this.excecutionStartTime = -1;
 	}
 	public int getImmidiate() {
 		return immidiate;
@@ -73,5 +75,15 @@ public class Buffer {
 	}
 	public void setInstruction(Instruction instruction) {
 		this.instruction = instruction;
+	}
+	public int getExcecutionStartTime() {
+		return excecutionStartTime;
+	}
+	public void setExcecutionStartTime(int excecutionStartTime) {
+		this.excecutionStartTime = excecutionStartTime;
+	}
+	
+	public boolean isExcecuting() {
+		return excecutionStartTime != -1;
 	}
 }

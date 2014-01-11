@@ -46,8 +46,8 @@ public class Sim {
 		while (!(halt && instructionQueue.isEmpty()
 				&& reservationStationContainer.isDone())) {
 			int clk = Clock.getClock();
-//			 // remove
-//			 if (pc > 16 || Clock.getClock() > 655)
+//			  remove
+//			 if (pc >= 16 || Clock.getClock() > 1000)
 //			 break;
 
 			// Write to CDB?
@@ -114,7 +114,7 @@ public class Sim {
 							currentInstruction.setCycleExcecuteStart(Clock
 									.getClock());
 							currentInstruction.setCycleWriteCDB(-1);
-							pc += currentInstruction.getIMM(); // -1 because
+							pc += currentInstruction.getIMM() -1 ; // -1 because
 																	// pc
 																	// jumps
 																	// twice
@@ -136,7 +136,7 @@ public class Sim {
 								.getClock());
 						currentInstruction.setCycleWriteCDB(-1);
 						instructionQueue.clear();
-						pc += currentInstruction.getIMM();
+						pc += currentInstruction.getIMM() - 1;
 						currentInstruction = null;
 						issued = true;
 						Clock.incClock();
