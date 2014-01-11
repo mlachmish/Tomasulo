@@ -25,6 +25,16 @@ public abstract class AbstractReservationStation implements ReservationStation{
 	}
 	
 	@Override
+	public boolean isEmpty() {
+		for (int i = 0; i < dockNumber; i++) {
+			if (docks[i].getOp() != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean issue(Instruction inst) {
 		for (int i = 0; i < dockNumber; i++) {
 			if (docks[i].getOp() == null) {

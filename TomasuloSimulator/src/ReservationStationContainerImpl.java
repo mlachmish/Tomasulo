@@ -110,10 +110,17 @@ public class ReservationStationContainerImpl implements
 
 	}
 
+	//Check if all reservation station are empty from instruction and the CDB done writing
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean isReservationStationsEmpty = true;
+		for (ReservationStation rs : reservationStations) {
+			if (!rs.isEmpty()) {
+				isReservationStationsEmpty = false;
+			}
+		}
+		
+		return isReservationStationsEmpty && CDBFloatValues.isEmpty() && CDBIntValues.isEmpty();
 	}
 
 }
