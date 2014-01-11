@@ -79,12 +79,16 @@ public abstract class AbstractReservationStation implements ReservationStation{
 					&& docks[i].getJ().getDock() == cdbRegister.getDock()) {
 				docks[i].getJ().setData(cdbRegister.getData());
 				docks[i].getJ().setState(Constants.State.Value);
+				docks[i].getJ().setStationName(null);
+				docks[i].getJ().setDock(-1);
 			}
 			if (docks[i].getK().getState() == Constants.State.Queued
 					&& docks[i].getK().getStationName() == cdbRegister.getStationName()
 					&& docks[i].getK().getDock() == cdbRegister.getDock()) {
 				docks[i].getK().setData(cdbRegister.getData());
 				docks[i].getK().setState(Constants.State.Value);
+				docks[i].getK().setStationName(null);
+				docks[i].getK().setDock(-1);
 			}
 		}
 	}

@@ -122,12 +122,16 @@ public class LoadStoreReservationStation implements ReservationStation{
 					&& curBuf.getJ().getDock() == cdbRegister.getDock()) {
 				curBuf.getJ().setData((Integer)cdbRegister.getData());
 				curBuf.getJ().setState(Constants.State.Value);
+				curBuf.getJ().setStationName(null);
+				curBuf.getJ().setDock(-1);
 			}
 			if (curBuf.getK().getState() ==Constants.State.Queued
 					&& curBuf.getK().getStationName() == cdbRegister.getStationName()
 					&& curBuf.getK().getDock() == cdbRegister.getDock()) {
 				curBuf.getK().setData((Float)cdbRegister.getData());
 				curBuf.getK().setState(Constants.State.Value);
+				curBuf.getK().setStationName(null);
+				curBuf.getK().setDock(-1);
 			}
 		}
 	}
