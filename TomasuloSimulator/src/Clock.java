@@ -1,6 +1,5 @@
 /**
- * 
- * @author mlachmish
+ * Represent the clock of the entire system
  *Clock is a Singletone
  */
 public class Clock {

@@ -1,5 +1,10 @@
 import Constants.Constants;
 
+/**
+ *Represent a dock inside a reservation station
+ * @param <T> The registers type inside the dock
+ * @see ReservationStation
+ */
 public class Dock<T> {
 
 	private Constants.Opcode op;

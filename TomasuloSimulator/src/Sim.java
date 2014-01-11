@@ -54,7 +54,7 @@ public class Sim {
 			reservationStationContainer.updateFromCDB();
 
 			// Execute
-			reservationStationContainer.excecute();
+			reservationStationContainer.execute();
 
 			// "decode"
 			if (issued && !instructionQueue.isEmpty()) {

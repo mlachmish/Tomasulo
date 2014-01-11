@@ -61,7 +61,7 @@ public class ReservationStationContainerImpl implements
 	}
 
 	@Override
-	public void excecute() {
+	public void execute() {
 		for (ReservationStation rs : reservationStations) {
 			rs.excecute();
 		}

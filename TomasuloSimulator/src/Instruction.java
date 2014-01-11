@@ -1,5 +1,8 @@
 import Constants.Constants;
 
+/**
+ *Represent an instruction in the Tomasulo model
+ */
 public interface Instruction {
 
 	public Constants.Opcode getOpcode();

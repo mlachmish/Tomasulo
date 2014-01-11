@@ -1,5 +1,8 @@
 import Constants.Constants;
 
+/**
+ *This is an abstract class for all ALU reservation station
+ */
 public abstract class AbstractReservationStation implements ReservationStation{
 
 	int delay;

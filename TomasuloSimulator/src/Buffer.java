@@ -1,6 +1,9 @@
 import Constants.Constants;
 import Constants.Constants.Opcode;
 
+/**
+ *This is a read or write buffer
+ */
 public class Buffer {
 
 	Constants.Opcode op;

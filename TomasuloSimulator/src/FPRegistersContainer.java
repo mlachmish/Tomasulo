@@ -12,7 +12,7 @@ public class FPRegistersContainer implements RegistersContainer<Float>{
 	public FPRegistersContainer() {
 		super();
 		this.registers = new ArrayList<>(16);
-		for (int i = 0; i < 16; i++) { //initial registers value are their indexs
+		for (int i = 0; i < 16; i++) { //initial registers value are their indexes
 			Register<Float> reg = new RegisterImpl<>(Constants.State.Value,(float) i, null, 0 );			
 			this.registers.add(i, reg);			
 		}
