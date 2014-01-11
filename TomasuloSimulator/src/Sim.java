@@ -1,5 +1,7 @@
 import java.io.IOException;
+
 import Constants.Constants;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -36,18 +38,17 @@ public class Sim {
 			e.printStackTrace();
 		}
 
-		int pc = 0;
+		Integer pc = 0;
 		int instructionumber = 0;
 		Instruction currentInstruction = null;
 		Boolean halt = false;
 		Boolean issued = true;
-		while (!halt  
-				|| !instructionQueue.isEmpty()
+		while (!halt || !instructionQueue.isEmpty()
 				|| !reservationStationContainer.isDone()) {
 			int clk = Clock.getClock();
-//			//  remove
-//			if (pc > 16 || Clock.getClock() > 655)
-//				break;
+			// // remove
+			// if (pc > 16 || Clock.getClock() > 655)
+			// break;
 
 			// Write to CDB?
 			reservationStationContainer.updateFromCDB();
@@ -59,17 +60,18 @@ public class Sim {
 			if (issued && !instructionQueue.isEmpty()) {
 				currentInstruction = instructionQueue.poll();
 				currentInstruction.setInstructionNumber(instructionumber++);
+				issued = false;
 			}
 
 			if (currentInstruction != null) {
 				Constants.Opcode opcode = currentInstruction.getOpcode();
 				if (opcode == Constants.Opcode.HALT) {
-					halt = true;
-//					Clock.incClock();
-//					
-					break;
-				}
-				if (opcode == Constants.Opcode.BEQ
+					halt = true;					
+					// Clock.incClock();
+					//
+					// break;
+//					return -1;
+				} else if (opcode == Constants.Opcode.BEQ
 						|| opcode == Constants.Opcode.BNE
 						|| opcode.equals(Constants.Opcode.JUMP)) {
 
@@ -83,6 +85,7 @@ public class Sim {
 								|| SRC1.getState() == Constants.State.Queued) {
 							// if we don't have values yet, continue to execute
 							// don't jump
+//							return 0;
 						} else if ((opcode == Constants.Opcode.BEQ)
 								&& (SRC0.getData() != SRC1.getData())) {
 							// don't jump
@@ -92,6 +95,7 @@ public class Sim {
 									.getClock());
 							currentInstruction.setCycleWriteCDB(-1);
 							issued = true;
+//							return 0;
 
 						} else if ((opcode == Constants.Opcode.BNE)
 								&& (SRC0.getData() == SRC1.getData())) {
@@ -102,6 +106,7 @@ public class Sim {
 							currentInstruction.setCycleExcecuteStart(Clock
 									.getClock());
 							currentInstruction.setCycleWriteCDB(-1);
+//							return 0;
 						} else {
 							// JUMP!!!
 							traces.add(currentInstruction);
@@ -125,22 +130,26 @@ public class Sim {
 						}
 					} else {
 						// JUMP!!!
-
+						traces.add(currentInstruction);
+						currentInstruction.setCycleIssued(Clock.getClock());
+						currentInstruction.setCycleExcecuteStart(Clock
+								.getClock());
+						currentInstruction.setCycleWriteCDB(-1);
+						instructionQueue.clear();
 						pc += currentInstruction.getIMM();
 						currentInstruction = null;
 						issued = true;
 						Clock.incClock();
 						continue;
 					}
-				}
-			}
-			// Issue
-			if (currentInstruction != null) {
-				issued = reservationStationContainer
-						.issueInstruction(currentInstruction);
-				if (issued) {
-					traces.add(currentInstruction);
-					currentInstruction.setCycleIssued(Clock.getClock());
+				} else {
+					// Issue to reservation station
+					issued = reservationStationContainer
+							.issueInstruction(currentInstruction);
+					if (issued) {
+						traces.add(currentInstruction);
+						currentInstruction.setCycleIssued(Clock.getClock());
+					}
 				}
 			}
 
@@ -151,9 +160,11 @@ public class Sim {
 
 			Clock.incClock();
 		}
-
-		
-		
+		traces.add(currentInstruction);
+		currentInstruction.setCycleIssued(Clock.getClock() - 1);
+		currentInstruction.setCycleExcecuteStart(Clock
+				.getClock() - 1);
+		currentInstruction.setCycleWriteCDB(-1);
 		// Outputs
 		try {
 			Parser.createMemout(args[2]);
