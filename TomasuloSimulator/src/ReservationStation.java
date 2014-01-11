@@ -11,4 +11,6 @@ public interface ReservationStation {
 	boolean issue(Instruction inst);
 	
 	public void updateWithRegister(Register<?> cdbregister);
+	
+	public boolean isEmpty();
 }

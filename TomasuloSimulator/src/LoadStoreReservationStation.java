@@ -136,4 +136,10 @@ public class LoadStoreReservationStation implements ReservationStation{
 	public Constants.ReservationStationNames getName() {
 		return Constants.ReservationStationNames.LDST;
 	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return (loadCounter == 0) && (storeCounter == 0) && buffer.isEmpty();
+	}
 }
