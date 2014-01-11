@@ -10,7 +10,7 @@ public class INTRegistersContainer implements RegistersContainer<Integer>{
 	public INTRegistersContainer() {
 		super();
 		this.registers = new ArrayList<>(16);
-		for (int i = 0; i < 15; i++) { //initial registers value are their indexs
+		for (int i = 0; i < 16; i++) { //initial registers value are their indexs
 			Register<Integer> reg = new RegisterImpl<>(Constants.State.Value, i, null, 0 );
 			this.registers.add(i, reg);
 			

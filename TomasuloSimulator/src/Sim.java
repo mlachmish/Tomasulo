@@ -39,30 +39,15 @@ public class Sim {
 		int pc = 0;
 		int instructionumber = 0;
 		Instruction currentInstruction = null;
-		Boolean waitingToIssue = true;
+		Boolean halt = false;
 		Boolean issued = true;
-		Boolean waitingForJump = false;
-		while (true) {
+		while (!halt  
+				|| !instructionQueue.isEmpty()
+				|| reservationStationContainer.isDone()) {
 			int clk = Clock.getClock();
-			// TODO remove
-			if (pc > 16 || Clock.getClock() > 655)
-				break;
-
-			// if (currentInstruction == null) {
-			// // must be first Instruction
-			// Clock.incClock();
-			// continue;
-			// }
-
-			// if (!issued || waitingForJump)
-			// {
-			// // traces
-			// traces.add(currentInstruction);
-			// }
-
-			// issue : check for branch, check if available RS
-
-			//
+//			// TODO remove
+//			if (pc > 16 || Clock.getClock() > 655)
+//				break;
 
 			// Write to CDB?
 			reservationStationContainer.updateFromCDB();
@@ -79,8 +64,10 @@ public class Sim {
 			if (currentInstruction != null) {
 				Constants.Opcode opcode = currentInstruction.getOpcode();
 				if (opcode == Constants.Opcode.HALT) {
-					Clock.incClock();
-					break;
+					halt = true;
+//					Clock.incClock();
+//					
+//					break;
 				}
 				if (opcode == Constants.Opcode.BEQ
 						|| opcode == Constants.Opcode.BNE
@@ -157,15 +144,16 @@ public class Sim {
 				}
 			}
 
-			if (issued) {
+			if (issued && !halt) {
 				// Fetch
 				instructionQueue.add(memory.getInstruction(pc++));
 			}
 
 			Clock.incClock();
-
 		}
 
+		
+		
 		// Outputs
 		try {
 			Parser.createMemout(args[2]);

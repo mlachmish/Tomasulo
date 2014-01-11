@@ -9,4 +9,6 @@ public interface ReservationStationContainer {
 	public void excecute();
 	
 	public void updateFromCDB();
+
+	public boolean isDone();
 }

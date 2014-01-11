@@ -48,17 +48,17 @@ public class Parser {
 
 	public static void createRegint(String path) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-//		for (int i = 0; i < Sim.intRegistersContainer) {
-//			
-//		}
-		// TODO: add implementation
+		for (int i = 0; i < 16; i++) {
+			writer.write(Sim.intRegistersContainer.getRegister(i).getData() + "\n");
+		}
 		writer.close();
 	}
 
 	public static void createRegout(String path) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-//		Sim.floatRegistersContainer;
-		// TODO: add implementation
+		for (int i = 0; i < 16; i++) {
+			writer.write(Sim.floatRegistersContainer.getRegister(i).getData() + "\n");
+		}
 		writer.close();
 	}
 
