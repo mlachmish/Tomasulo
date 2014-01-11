@@ -53,11 +53,6 @@ public class LoadStoreReservationStation implements ReservationStation{
 
 	@Override
 	public void excecute() {
-		if (isReadyToExcecute()) {
-			isExcecuting = true;
-			excecutionStartTime = Clock.getClock();
-			buffer.peek().getInstruction().setCycleExcecuteStart(Clock.getClock());			
-		}
 		if (isExcecuting && (Clock.getClock() == excecutionStartTime + delay)) {
 			Buffer currInst = buffer.peek();
 			float result = 0;
@@ -75,6 +70,11 @@ public class LoadStoreReservationStation implements ReservationStation{
 			isExcecuting = false;
 			buffer.poll();
 			excecutionStartTime = 0;
+		}
+		if (isReadyToExcecute()) {
+			isExcecuting = true;
+			excecutionStartTime = Clock.getClock();
+			buffer.peek().getInstruction().setCycleExcecuteStart(Clock.getClock());			
 		}
 	}
 
