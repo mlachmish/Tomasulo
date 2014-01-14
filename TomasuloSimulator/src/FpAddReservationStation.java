@@ -8,26 +8,6 @@ public class FpAddReservationStation extends AbstractReservationStation{
 		this.registers = Sim.floatRegistersContainer;
 	}
 	
-//	@Override
-//	public boolean issue(Instruction inst) {
-//		for (int i = 0; i < dockNumber; i++) {
-//			if (docks[i].getOp() == null) {
-//				docks[i].setOp(inst.getOpcode());
-//				docks[i].setInstrNumber(inst.getInstructionNumber());
-//				docks[i].setJ(Sim.floatRegistersContainer.getRegister(inst.getSRC0()).copy());
-//				docks[i].setK(Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy());
-//				docks[i].setInstruction(inst);
-//				
-//				Sim.floatRegistersContainer.getRegister(inst.getDST()).setState(Constatns.State.Queued);
-//				Sim.floatRegistersContainer.getRegister(inst.getDST()).setStationName(getName());
-//				Sim.floatRegistersContainer.getRegister(inst.getDST()).setDock(i);
-//				
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
 	@Override
 	public void excecute() {
 		for (int i = 0; i < dockNumber; i++) {
@@ -65,8 +45,6 @@ public class FpAddReservationStation extends AbstractReservationStation{
 			docks[dockIndexExcecuting].setExcecutionStartTime(excecutionStartTime);
 			docks[dockIndexExcecuting].getInstruction().setCycleExcecuteStart(excecutionStartTime);
 		}
-		
-		
 	}
 
 	@Override

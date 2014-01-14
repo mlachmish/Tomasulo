@@ -8,17 +8,6 @@ public class RegisterImpl<T> implements Register<T> {
 	Constants.ReservationStationNames rsName;
 	int dock;
 	
-//	/**
-//	 * empty constructor
-//	 */
-//	public RegisterImpl() { //Empty register
-//		super();
-//		this.state = null;
-//		this.data = null;
-//		this.rsName = null;
-//		dock = 0;
-//	}
-	
 	/**
 	 * 
 	 * @param state current state

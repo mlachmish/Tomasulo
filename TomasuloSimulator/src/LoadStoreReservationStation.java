@@ -32,10 +32,6 @@ public class LoadStoreReservationStation implements ReservationStation {
 	}
 
 	public Buffer excecuteNext() {
-		// if (isExcecuting) {
-		// return false;
-		// }
-		// Iterator<Buffer> iterator = buffer.descendingIterator();
 		Buffer currentBuffer = null;
 		for (Iterator iterator2 = buffer.iterator(); iterator2
 				.hasNext();) {
@@ -46,11 +42,6 @@ public class LoadStoreReservationStation implements ReservationStation {
 				currentBuffer = null;
 			}
 		}
-		// Buffer firstBuf = iterator.next()
-		// boolean ready = false;
-		// while (!ready && firstBuf != null)
-		//
-		// }
 		return currentBuffer;
 	}
 
@@ -159,7 +150,6 @@ public class LoadStoreReservationStation implements ReservationStation {
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
 		return (loadCounter == 0) && (storeCounter == 0) && buffer.isEmpty();
 	}
 
@@ -173,20 +163,8 @@ public class LoadStoreReservationStation implements ReservationStation {
 				if (currentBuffer.getOp() == Constants.Opcode.ST) {
 					return (currentBuffer.getJ().getState() == Constants.State.Value
 							&& currentBuffer.getK().getState() == Constants.State.Value);
-//					if (currentBuffer.getJ().getState() == Constants.State.Value
-//							&& currentBuffer.getK().getState() == Constants.State.Value) {
-//						return true;
-//					} else 
-//					{
-//						return false;
-					
-					
 				} else if (currentBuffer.getOp() == Constants.Opcode.LD) {
 					return (currentBuffer.getJ().getState() == Constants.State.Value);
-//					if (currentBuffer.getJ().getState() == Constants.State.Value)
-//						return true;
-//				} else {
-//					return false;
 				}
 			} else {
 				currentBuffer = null;

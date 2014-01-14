@@ -10,6 +10,9 @@ import java.util.Map;
 
 public class Parser {
 
+	/**
+	 * Parse the configuration file
+	 */
 	public static Map<String, Integer> loadConfiguration(String cfgInputFile) throws IOException {
 		BufferedReader reader;
 
@@ -25,6 +28,11 @@ public class Parser {
 		return configuratios;
 	}
 
+	/**
+	 * Read the memin file to memory
+	 * @param path the path to file
+	 * @return A new Memory module
+	 */
 	public static Memory loadMemory(String path) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(path));
 		String[] memoryArr = new String[1024];
@@ -37,6 +45,10 @@ public class Parser {
 
 	}
 
+	/**
+	 * Write the memout file from the memory module
+	 * @param path Where to write to
+	 */
 	public static void createMemout(String path) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		Memory mem = Sim.memory;
@@ -46,6 +58,9 @@ public class Parser {
 		writer.close();
 	}
 
+	/**
+	 * write the integer registers file
+	 */
 	public static void createRegint(String path) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		for (int i = 0; i < 16; i++) {
@@ -54,6 +69,9 @@ public class Parser {
 		writer.close();
 	}
 
+	/**
+	 * write the float registers file
+	 */
 	public static void createRegout(String path) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		for (int i = 0; i < 16; i++) {
@@ -62,6 +80,9 @@ public class Parser {
 		writer.close();
 	}
 
+	/**
+	 * Write trace file
+	 */
 	public static void createTrace(String path) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 		for (Instruction trace : Sim.traces) {

@@ -7,17 +7,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-//import Constatns.Opcode;
-
+/**
+ * The main class that holds the static data structure (like singleton) and performs the main loop
+ * @author t-guyf
+ *
+ */
 public class Sim {
 
+	/**
+	 * Holds all the reservation stations
+	 */
 	public static ReservationStationContainer reservationStationContainer;
+	
+	/**
+	 * Float registers
+	 */
 	public static RegistersContainer<Float> floatRegistersContainer;
+	
+	/**
+	 * Integer registers
+	 */
 	public static RegistersContainer<Integer> intRegistersContainer;
+	
+	/**
+	 * The memory module
+	 */
 	public static Memory memory;
+	
+	/**
+	 * A queue of fetched instruction yet to be issued
+	 */
 	public static Queue<Instruction> instructionQueue;
+	
+	/**
+	 * The traces
+	 */
 	public static List<Instruction> traces;
 
+	/**
+	 * the main loop
+	 * @param args is ignored
+	 */
 	public static void main(String[] args) {
 
 		// Construct types
@@ -85,7 +115,6 @@ public class Sim {
 								|| SRC1.getState() == Constants.State.Queued) {
 							// if we don't have values yet, continue to execute
 							// don't jump
-//							return 0;
 						} else if ((opcode == Constants.Opcode.BEQ)
 								&& (SRC0.getData() != SRC1.getData())) {
 							// don't jump
@@ -95,7 +124,6 @@ public class Sim {
 									.getClock());
 							currentInstruction.setCycleWriteCDB(-1);
 							issued = true;
-//							return 0;
 
 						} else if ((opcode == Constants.Opcode.BNE)
 								&& (SRC0.getData() == SRC1.getData())) {
@@ -106,7 +134,6 @@ public class Sim {
 							currentInstruction.setCycleExcecuteStart(Clock
 									.getClock());
 							currentInstruction.setCycleWriteCDB(-1);
-//							return 0;
 						} else {
 							// JUMP!!!
 							traces.add(currentInstruction);

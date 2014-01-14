@@ -72,26 +72,6 @@ public class IntAddReservationStation extends AbstractReservationStation{
 
 	}
 
-
-	//	@Override
-	//	public boolean issue(Instruction inst) {
-	//		for (int i = 0; i < dockNumber; i++) {
-	//			if (docks[i].getOp() == null) {
-	//				docks[i].setOp(inst.getOpcode());
-	//				docks[i].setInstrNumber(inst.getInstructionNumber());
-	//				docks[i].setJ(Sim.intRegistersContainer.getRegister(inst.getSRC0()).copy());
-	//				docks[i].setK(Sim.intRegistersContainer.getRegister(inst.getSRC1()).copy());
-	//				
-	//				Sim.intRegistersContainer.getRegister(inst.getDST()).setState(Constatns.State.Queued);
-	//				Sim.intRegistersContainer.getRegister(inst.getDST()).setStationName(getName());
-	//				Sim.intRegistersContainer.getRegister(inst.getDST()).setDock(i);
-	//				
-	//				return true;
-	//			}
-	//		}
-	//		return false;
-	//	}
-
 	@Override
 	public Constants.ReservationStationNames getName() {
 		return Constants.ReservationStationNames.INTADD;

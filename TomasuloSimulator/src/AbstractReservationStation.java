@@ -39,9 +39,6 @@ public abstract class AbstractReservationStation implements ReservationStation{
 				docks[i].setInstrNumber(inst.getInstructionNumber());
 				docks[i].setJ(registers.getRegister(inst.getSRC0()).copy());
 				docks[i].setK(registers.getRegister(inst.getSRC1()).copy());
-//				docks[i].setJ(Sim.floatRegistersContainer.getRegister(inst.getSRC0()).copy());
-//				
-//				docks[i].setK(Sim.floatRegistersContainer.getRegister(inst.getSRC1()).copy());
 				docks[i].setInstruction(inst);
 
 				registers.getRegister(inst.getDST()).setState(Constants.State.Queued);

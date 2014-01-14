@@ -1,6 +1,6 @@
 /**
  * Represent the clock of the entire system
- *Clock is a Singletone
+ *Clock is a Singleton
  */
 public class Clock {
 

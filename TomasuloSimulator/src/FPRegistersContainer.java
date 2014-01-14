@@ -7,8 +7,6 @@ public class FPRegistersContainer implements RegistersContainer<Float>{
 
 	List<Register<Float>> registers;
 	
-	
-	
 	public FPRegistersContainer() {
 		super();
 		this.registers = new ArrayList<>(16);
