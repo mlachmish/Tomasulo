@@ -178,6 +178,5 @@ public class LoadStoreReservationStation implements ReservationStation {
 	public void incClock() {
 		prevLoadCounter = loadCounter;
 		prevStoreCounter = storeCounter;
-		
 	}
 }

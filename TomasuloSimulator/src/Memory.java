@@ -1,4 +1,7 @@
 
+/**
+ * The memory module
+ */
 public interface Memory {
 
 	/**
