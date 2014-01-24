@@ -75,11 +75,6 @@ public class Sim {
 		Boolean issued = true;
 		while (!(halt && instructionQueue.isEmpty()
 				&& reservationStationContainer.isDone())) {
-			int clk = Clock.getClock();
-////			  remove
-//			 if (pc >= 16 || Clock.getClock() > 1000)
-//			 break;
-
 			// Write to CDB?
 			reservationStationContainer.updateFromCDB();
 
@@ -199,7 +194,7 @@ public class Sim {
 			Parser.createRegout(args[4]);
 			Parser.createTrace(args[5]);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("IO exception occured");
 			e.printStackTrace();
 		}
 	}

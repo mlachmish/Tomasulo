@@ -12,6 +12,7 @@ public class FpMulReservationStation extends AbstractReservationStation{
 	public void excecute() {		
 		for (int i = 0; i < dockNumber; i++) {
 			if (docks[i].isExcecuting() && Clock.getClock() == docks[i].getExcecutionStartTime() + delay) {
+				// if execution is done calculate and put in cdb
 				float result=0f;
 				Dock excecutionDock = docks[i];
 				if (excecutionDock.getOp() == Constants.Opcode.MULTS){
@@ -28,6 +29,7 @@ public class FpMulReservationStation extends AbstractReservationStation{
 		}
 
 		if (isReadyToExcecute()) {
+			//start a new inst
 			int dockIndexExcecuting = -1;
 			int excecutionStartTime = Clock.getClock();
 

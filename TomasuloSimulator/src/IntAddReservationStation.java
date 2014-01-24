@@ -1,4 +1,3 @@
-
 import Constants.Constants;
 
 public class IntAddReservationStation extends AbstractReservationStation{
@@ -12,6 +11,7 @@ public class IntAddReservationStation extends AbstractReservationStation{
 	public void excecute() {
 		for (int i = 0; i < dockNumber; i++) {
 			if (docks[i].isExcecuting() && Clock.getClock() == docks[i].getExcecutionStartTime() + delay) {
+				// if execution is done calculate and put in cdb
 				int result=0;
 				Dock executionDock = docks[i];
 				Constants.Opcode op = executionDock.getOp(); 
@@ -53,6 +53,7 @@ public class IntAddReservationStation extends AbstractReservationStation{
 		}
 
 		if (isReadyToExcecute()) {
+			//start a new inst
 			int dockIndexExcecuting = -1;
 			int excecutionStartTime = Clock.getClock();
 
@@ -76,5 +77,4 @@ public class IntAddReservationStation extends AbstractReservationStation{
 	public Constants.ReservationStationNames getName() {
 		return Constants.ReservationStationNames.INTADD;
 	}
-
 }

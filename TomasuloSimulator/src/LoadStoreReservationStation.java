@@ -47,13 +47,14 @@ public class LoadStoreReservationStation implements ReservationStation {
 
 	@Override
 	public void excecute() {
+		// get the next load or store to execute
 		Buffer currInst = buffer.peek();
 		if (currInst == null)
 			return;
 		if (currInst.isExcecuting()
 				&& (Clock.getClock() == currInst.getExcecutionStartTime()
-						+ delay)) {
-
+						+ delay)){
+		// if the execution is 'complete', do the operation and set the traces
 			float result = 0;
 			if (currInst.getOp() == Constants.Opcode.ST) {
 				Sim.memory.store(

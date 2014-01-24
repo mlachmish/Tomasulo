@@ -84,7 +84,6 @@ public abstract class AbstractReservationStation implements ReservationStation{
 	}
 	
 	public void incClock()
-	{
-		
+	{		
 	}
 }
